@@ -37,7 +37,7 @@ App = {
     });
   },
 
-  // Listen for events eelectionInstance.ticketsCount()mitted from the contract
+  // Listen for events einfractionInstance.ticketsCount()mitted from the contract
   listenForEvents: function() {
     App.contracts.Infraction.deployed().then(function(instance) {
       // Restart Chrome if you are unable to receive this event
@@ -47,17 +47,19 @@ App = {
         fromBlock: 0,
         toBlock: 'latest'
       }).watch(function(error, event) {
-        console.log("Evento Ocorreu", event)
+        console.log("Evento Ocorreu e Foi escutado", event)
         // Reload when a new infraction is recorded
+        
         //App.render();
+        
       });
     });
   },
 
   render: function() {
-    var electionInstance;
     var loader = $("#loader");
     var content = $("#content");
+
     loader.show();
     content.hide();
 
@@ -69,31 +71,38 @@ App = {
       }
     });
 
+    // Render Ticket Information
+    App.renderTicketInformations();
 
+    // Render Driver Information
+    App.renderDriverInformations();
     
-    // console.log("Conta: "+ App.account);
-    console.log("Checkpoint 1");
-    // Load contract data
+    // Render Authoritie Information
+    App.renderAuthoritieInformations();
+
+    loader.hide();
+    content.show();
+
+  },
+
+  renderTicketInformations: function(){
+    var infractionInstance;
+
+    console.log("Rendering Ticket Informations");
     App.contracts.Infraction.deployed().then(function(instance) {
       
-      electionInstance = instance;
-      console.log("Aqui" + electionInstance.ticketsCount());
+      infractionInstance = instance;
 
-      return electionInstance.ticketsCount();
-
+      return infractionInstance.ticketsCount();
     }).then(function(ticketsCount) {
-      //ticketsCount = electionInstance.ticketsCount();
+      console.log("Quantidade de Motoristas: " + ticketsCount)
+      var ticketResults = $("#ticketResults");
+      ticketResults.empty();
 
-      var candidatesResults = $("#candidatesResults");
-      candidatesResults.empty();
-
-      var candidatesSelect = $('#candidatesSelect');
-      candidatesSelect.empty();
       console.log("Quantidade de Tickets: " + ticketsCount);
 
       for (var i = 0; i < ticketsCount; i++) {
-          console.log("Iteração: "+i)
-        electionInstance.tickets(i).then(function(ticket) {
+          infractionInstance.tickets(i).then(function(ticket) {
           var id = ticket[0];
           var vehiclePlate = ticket[1];
           var infractionCategory = ticket[2];
@@ -106,50 +115,134 @@ App = {
           var authorityResponsableAdress = ticket[9];
 
           // Render candidate Result
-          var candidateTemplate = "<tr><th>" + 
+          var ticketTemplate = "<tr><th>" + 
                                       id + "</th><td>" + vehiclePlate + "</td><td>" + infractionCategory + "</td><td>" +
                                       dateInfraction + "</td><td>" + infractionPoints + "</td><td>" + observations +"</td><td>" +
                                       valueToPay + "</td><td>" + statusOfInfraction + "</td><td>" + infractorDriverAddress + "</td><td>" +
                                       authorityResponsableAdress + "</td></tr>"
           
-          candidatesResults.append(candidateTemplate);
-            
+          ticketResults.append(ticketTemplate);
         });
         
       }
-      //loader.hide();
-      //content.show();
 
-     // return electionInstance.drivers(App.account);
     }).then(function() {
-      // Do not allow a user to vote
-      /*
-      if(hasVoted) {
-        $('form').hide();
-      }*/
-      loader.hide();
-      content.show();
-    }
-    
+        // Nothing to do
+      }
     ).catch(function(error) {
       console.warn(error);
     });
   },
 
-  castVote: function() {
-    /*
-    var candidateId = $('#candidatesSelect').val();
+  renderDriverInformations: function(){
+    var infractionInstance;
+
+    console.log("Rendering Drivers Informations");
     App.contracts.Infraction.deployed().then(function(instance) {
-      return instance.vote(candidateId, { from: App.account });
+      
+      infractionInstance = instance;
+
+      return infractionInstance.driversCount();
+    }).then(function(driversCount) {
+      console.log("Quantidade de Motoristas: " + driversCount)
+
+      var driverResults = $("#driversResults");
+      driverResults.empty();
+
+
+      for (var i = 0; i < driversCount; i++) {
+          infractionInstance.drivers(i).then(function(drivers) {
+          var id = drivers[0];
+          var name = drivers[1];
+          var driverAddress = drivers[3];
+
+
+          // Render candidate Result
+          var driverTemplate = "<tr><th>" + id + "</th><td>" + driverAddress + "</td><td>" + name  + "</td></tr>"
+          
+          driverResults.append(driverTemplate);
+        });
+        
+      }
+
+    }).then(function() {
+      // Nothing to do
+      }
+    ).catch(function(error) {
+      console.warn(error);
+    });
+  },
+
+  renderAuthoritieInformations: function(){
+    var infractionInstance;
+
+    console.log("Rendering Authorities Informations");
+    App.contracts.Infraction.deployed().then(function(instance) {
+      
+      infractionInstance = instance;
+
+      return infractionInstance.authoritiesCount();
+    }).then(function(authoritiesCount) {
+      console.log("Quantidade de Autoridades: " + authoritiesCount)
+
+      var authoritiesResults = $("#authoritiesResults");
+      authoritiesResults.empty();
+
+
+      for (var i = 0; i < authoritiesCount; i++) {
+          infractionInstance.authorities(i).then(function(authorities) {
+          var id = authorities[0];
+          var name = authorities[1];
+          var sigla = authorities[2];
+          var authoritieAddress = authorities[3];
+
+
+          // Render candidate Result
+          var authoritieTemplate = "<tr><th>" + id + "</th><td>" + authoritieAddress + "</td><td>" + name  + "</td><td>" + sigla +"</td></tr>"
+          
+          authoritiesResults.append(authoritieTemplate);
+        });
+        
+      }
+
+    }).then(function() {
+      // Nothing to do
+      }
+    ).catch(function(error) {
+      console.warn(error);
+    });
+  },
+
+
+  registerInfractionFunction: function() {
+    // TODO: Call back não está sendo recebido do smart contract
+    var vehiclePlateField = $('#vehiclePlateFieldId').val();
+    var infractionCategoryField = $('#infractionCategoryFieldId').val();
+    var dateInfractionField = $('#dateInfractionFieldId').val();
+    var infractionPointsField = $('#infractionPointsFieldId').val();
+    var observationsField = $('#observationsFieldId').val();
+    var valueToPayField = $('#valueToPayFieldId').val();
+    var statusOfInfractionField = $('#statusOfInfractionFieldId').val();
+    var infractorDriverAddressField = $('#infractorDriverAddressFieldId').val();
+    var authorityResponsableAdressField = $('#authorityResponsableAdressFieldId').val(); 
+
+
+    
+    App.contracts.Infraction.deployed().then(function(instance) {
+           result = instance.registerInfraction(vehiclePlateField, infractionCategoryField, dateInfractionField,
+                                         infractionPointsField, observationsField, valueToPayField,
+                                         statusOfInfractionField, infractorDriverAddressField, 
+                                         authorityResponsableAdressField, { from: App.account });
+        
     }).then(function(result) {
-      // Wait for votes to update
-      $("#content").hide();
-      $("#loader").show();
+      //$("#content").hide();
+      //$("#loader").show();
+      console.log(result)
     }).catch(function(err) {
       console.error(err);
     });
-  */
-  }
+    
+  },
 };
 
 $(function() {

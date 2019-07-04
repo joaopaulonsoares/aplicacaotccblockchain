@@ -21,6 +21,10 @@
 <body>
 
     <div class="container">
+        <p id="accountAddress" class="text-center"></p>
+        <br>
+        <br>
+
         <div class="row">
           <div class="center">
             <h1 class="text-center">Dados</h1>
@@ -61,7 +65,7 @@
                                     <th scope="col">Autoridade Resp.</th>                
                                   </tr>
                                 </thead>
-                                <tbody id="candidatesResults">
+                                <tbody id="ticketResults">
                                 </tbody>
                               </table>
                           </div>
@@ -81,6 +85,7 @@
                                   <h4 class="center">Autoridades Registradas</h4>
                                   <thead>
                                     <tr>
+                                      <th scope="col">ID da Autoridade</th>
                                       <th scope="col">Address</th>
                                       <th scope="col">Nome</th>
                                       <th scope="col">Sigla</th>
@@ -106,9 +111,9 @@
                                   <h4 class="center">Motoristas Registrados</h4>
                                   <thead>
                                     <tr>
+                                      <th scope="col">ID do Motorista</th>
                                       <th scope="col">Address</th>
                                       <th scope="col">Nome</th>
-                                      <th scope="col">Número de Pontos</th>
                                     </tr>
                                   </thead>
                                   <tbody id="driversResults">
@@ -122,7 +127,7 @@
 
               <br>
               <br>
-
+              <!--
               <form onSubmit="">
                 <div class="form-group">
                   <label for="candidatesSelect">Select Candidate</label>
@@ -130,9 +135,57 @@
                   </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Vote</button>
-                <hr />
+              </form>-->
+
+              <hr>
+
+              <!-- -------------------------------------- FORM ----------------------------------------------------- -->
+
+
+              <form onSubmit="App.registerInfractionFunction();">
+                  <fieldset>
+                  <legend>Formulário para cadastro de registro de infração</legend>
+                  
+                  Placa do Veículo:<br>
+                  <input type="text" id="vehiclePlateFieldId" name="vehiclePlateField" value="AAA-1111">
+                  <br><br>
+                  
+                  Categoria da Infração:<br>
+                  <input type="number" id="infractionCategoryFieldId" name="infractionCategoryField" value="1">
+                  <br><br>
+
+                  Data da Infração:<br>
+                  <input type="text" id="dateInfractionFieldId" name="dateInfractionField" value="01/01/2019">
+                  <br><br>
+
+                  Pontos da Infração:<br>
+                  <input type="number" id="infractionPointsFieldId" name="infractionPointsField" value="5">
+                  <br><br>
+
+                  Observações:<br>
+                  <input type="text" id="observationsFieldId" name="observationsField" value="Direção Perigosa">
+                  <br><br>
+                  
+                  Valor da Multa:<br>
+                  <input type="number" id="valueToPayFieldId" name="valueToPayField" value="3">
+                  <br><br>
+
+                  Situação da Multa:<br>
+                  <input type="number" id="statusOfInfractionFieldId" name="statusOfInfractionField" value="1">
+                  <br><br>
+
+                  Address do Infrator:<br>
+                  <input type="text" id="infractorDriverAddressFieldId" name="infractorDriverAddressField" value="0xBbD25469b0f2F569511C195a73408D7DcceB9eDb">
+                  <br><br>
+
+                  Address do responsável pelo registro:<br>
+                  <input type="text" id="authorityResponsableAdressFieldId" name="authorityResponsableAdressField" value="0x7Fe8C20672FA2147d0db1fAa8C49fBEbA00f0c23">
+                  <br><br>
+
+
+                  <input type="submit" value="Registrar">
+                </fieldset>
               </form>
-              <p id="accountAddress" class="text-center"></p>
 
 
             </div>

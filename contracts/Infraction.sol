@@ -25,6 +25,7 @@ contract Infraction{
 
     // Model a Driver
     struct Drivers{
+        uint id;
         string name;
         uint numberOfPoints;
         address driverAddress;
@@ -33,6 +34,7 @@ contract Infraction{
 
     // Model Authoritie
     struct Authorities{
+        uint id;
         string name;
         string sigla;
         address authoritieAddress;
@@ -41,14 +43,17 @@ contract Infraction{
 
     // Map Tickets
     mapping(uint => TraficTicket) public tickets;
-    mapping(address => Drivers) public drivers;
-    mapping(address => Authorities) public authorities;
+    mapping(uint => Drivers) public drivers; // Para simular o banco auxiliar de motoristas
+    mapping(address => Drivers) public driversMap;
+    mapping(address => Authorities) public authoritiesMap;
+    mapping(uint => Authorities) public authorities; // Para simular o banco auxiliar de autoridades
 
     // Create Lists
     uint[] public ticketList;
     address[] public driversList;
+    uint[] public driverListUint;
     address[] public authoritiesList;
-
+    uint[] public authoritiesListUint;
 
     // Address
     address public ownerInfraction; // Who register the infraction. Ex: Police Man
@@ -89,6 +94,7 @@ contract Infraction{
         registerDriver("João",0,0xf6A3D407E0013b400Eb355F70B99ac71644583F1);
         registerDriver("Paulo",0,0x21AeE1a9597Bc9e8E1EF14C4fD6D3fE55A9027b4);
         registerDriver("Nunes",0,0xBbD25469b0f2F569511C195a73408D7DcceB9eDb);
+        registerDriver("Soares",0,0x3c5B21D203802D2600cA0AcBffd7B24075C0Ff79);
 
         // Registering Some Tickets
         registerInfraction("ABC-1234",1,"01/01/2019",5,"Estava a 110 na via de 80",1,0,0xf6A3D407E0013b400Eb355F70B99ac71644583F1);
@@ -101,7 +107,9 @@ contract Infraction{
 
     function registerAuthoritie(string memory _name,string memory _sigla, address _authoritieAddress) public{
 
-        authorities[_authoritieAddress] = Authorities(_name, _sigla, _authoritieAddress);
+        authoritiesMap[_authoritieAddress] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress);
+        authorities[authoritiesCount] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress);
+
         authoritiesCount++;
         emit registeredAuthoritieEvent(msg.sender);
 
@@ -110,7 +118,9 @@ contract Infraction{
 
     function registerDriver(string memory _name,uint numberOfPoints, address _driverAddress) public{
 
-        drivers[_driverAddress] = Drivers(_name, numberOfPoints, _driverAddress);
+        driversMap[_driverAddress] = Drivers(driversCount, _name, numberOfPoints, _driverAddress);
+        drivers[driversCount] = Drivers(driversCount, _name, numberOfPoints, _driverAddress);
+
         driversCount++;
         emit registeredDriverEvent(msg.sender);
     }
@@ -128,8 +138,8 @@ contract Infraction{
                                 _valueToPay, _statusOfInfraction, _infractorDriverAddress, msg.sender);
 
         // Update driver points
-        uint driverPointsAfterInfraction = drivers[_infractorDriverAddress].numberOfPoints + _infractionPoints;
-        drivers[_infractorDriverAddress].numberOfPoints = driverPointsAfterInfraction;
+        uint driverPointsAfterInfraction = driversMap[_infractorDriverAddress].numberOfPoints + _infractionPoints;
+        driversMap[_infractorDriverAddress].numberOfPoints = driverPointsAfterInfraction;
 
         // trigger infraction registered event
         emit registeredInfraction(msg.sender);
@@ -155,17 +165,33 @@ contract Infraction{
     }
 
 
-    function getDriverInformation(address driverAddress) public view returns (string memory name,uint numberOfPoints){
+    /*function getDriverInformation(address driverAddress) public view returns (string memory name,uint numberOfPoints){
         name = drivers[driverAddress].name;
         numberOfPoints = drivers[driverAddress].numberOfPoints;
 
+    }*/
+
+
+    function getDriverInformation(uint driverId) public view returns (string memory name,uint numberOfPoints, address driverAddress){
+        name = drivers[driverId].name;
+        driverAddress = drivers[driverId].driverAddress;
+        numberOfPoints = drivers[driverId].numberOfPoints;
+
+
     }
 
-
-    function getAuthoritieInformation(address authoritieAddress) public view returns (string memory name, string memory sigla){
+    /*function getAuthoritieInformation(address authoritieAddress) public view returns (string memory name, string memory sigla){
         name = authorities[authoritieAddress].name;
         sigla = authorities[authoritieAddress].sigla;
 
+    }*/
+
+    function getAuthoritieInformation(uint authoritieId) public view returns (string memory name, string memory sigla,
+    address authoritieAddress){
+        name = authorities[authoritieId].name;
+        sigla = authorities[authoritieId].sigla;
+        authoritieAddress = authorities[authoritieId].authoritieAddress;
     }
+
 
 }
