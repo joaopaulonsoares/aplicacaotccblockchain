@@ -5,7 +5,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import axiosInstance from './../../auth/axiosApi.js'
-import {TOKEN_OBTAIN_URL, ESTUDIO_PAGE_URL} from './../../api_urls';
+import {TOKEN_OBTAIN_URL, ESTUDIO_PAGE_URL, DASHBOARD_PAGE_URL, DASHBOARD_BASE_URL} from './../../api_urls';
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -89,7 +89,7 @@ class LoginScreen extends React.Component {
       return (
         <div>
           {this.state.succesfullLogin ?
-            <Redirect to={ESTUDIO_PAGE_URL} />
+            <Redirect to={DASHBOARD_BASE_URL} />
             :
             <Container component="main" maxWidth="xs">
                 <CssBaseline />

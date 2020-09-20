@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import EstudioAcompanhePageContainer from './containers/EstudioAcompanhePageContainer';
 import LoginScreen from "./containers/LoginScreenContainer";
+import MenuDrawer from './containers/MenuDrawer'
 import LoginPage from './containers/LoginPage'
+import InitialDashboard from './containers/InitialDashboard'
 import axiosInstance from './auth/axiosApi';
-import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, ESTUDIO_PAGE_URL, DASHBOARD_PAGE_URL} from './api_urls'
+import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, DASHBOARD_PAGE_URL, DASHBOARD_BASE_URL} from './api_urls'
 
 
 class PrivateRouteAuth extends Component{
@@ -73,9 +75,11 @@ const AppRouter = (props) => (
             </Route>
             {/*Authenticated routes */}
             <PrivateRouteAuth>
-                <Route exact path={ESTUDIO_PAGE_URL}>
-                    <EstudioAcompanhePageContainer></EstudioAcompanhePageContainer>
-                </Route>
+                <MenuDrawer>
+                    <Route exact path={DASHBOARD_BASE_URL}>
+                        <InitialDashboard></InitialDashboard>
+                    </Route>
+                </MenuDrawer>
             </PrivateRouteAuth>
         </Switch>
     </Router>

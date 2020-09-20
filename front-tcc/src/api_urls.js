@@ -11,7 +11,6 @@ module.exports = Object.freeze({
     //ROUTES
         INITIAL_PAGE_URL: '/', //Application Login and Initial page
         ESTUDIO_PAGE_URL: '/estudio', //Application Estudio Page
-        DASHBOARD_PAGE_URL: '/dashboard/:dashboardId', //Application Dashboard page
         DASHBOARD_BASE_URL: '/dashboard/',
 
 
