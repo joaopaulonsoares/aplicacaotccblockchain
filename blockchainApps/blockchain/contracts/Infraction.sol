@@ -174,8 +174,6 @@ contract Infraction{
         name = drivers[driverId].name;
         driverAddress = drivers[driverId].driverAddress;
         numberOfPoints = drivers[driverId].numberOfPoints;
-
-
     }
 
     /*function getAuthoritieInformation(address authoritieAddress) public view returns (string memory name, string memory sigla){

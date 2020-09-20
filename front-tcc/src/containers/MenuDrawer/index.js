@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -20,20 +20,35 @@ import { Link } from "react-router-dom";
 import NestedToolListUser from './NestedLists/NestedListUsers'
 import NestedToolInfractions from './NestedLists/NestedListInfractions'
 
-import NestedToolListItem from './listItemComponent'
-
+import Web3 from 'web3'
+import {APP_ABI, APP_ADDRESS} from '../../config.js'
 import {useStyles} from './const_info'
-import {toolsInfo} from './const_info'
 
 export default function MenuDrawer(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [account, setAccount] = React.useState('');
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleDrawerClose = () => {
     setOpen(false);
-  };  
+  }; 
+  
+ async function loadMetamaskInfo(){
+    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+    const network = await web3.eth.net.getNetworkType();
+    //Fetch account
+    const accounts = await web3.eth.getAccounts();
+    setAccount(accounts[0])
+    console.log(accounts)
+  }
+
+  useEffect(() => {
+     loadMetamaskInfo();
+  });
+
 
   return (
     <div className={classes.root}>
@@ -49,7 +64,7 @@ export default function MenuDrawer(props) {
             <MenuIcon></MenuIcon>
           </IconButton>
           <Typography component="h1" variant="h6" noWrap className={classes.title}>
-            {props.title}
+            Olá, {account}
           </Typography>
         </Toolbar>
       </AppBar>

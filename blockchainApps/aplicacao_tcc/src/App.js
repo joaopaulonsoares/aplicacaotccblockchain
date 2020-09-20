@@ -30,13 +30,12 @@ class App extends React.Component{
     //Instancia o contrato
     const trafficApp = new web3.eth.Contract(APP_ABI,APP_ADDRESS)
     this.setState({trafficApp})
-    console.log("contrato "+ trafficApp)
-
     const ticketsCount = await trafficApp.methods.ticketsCount().call()
     console.log(ticketsCount)
-
-
-    
+    const driverInfo = await trafficApp.methods.getDriverInformation(1).call()
+    console.log(driverInfo)
+    const ticketInfo = await trafficApp.methods.getTicketInformation(1).call()
+    console.log(ticketInfo)
   }
 
   render(){
