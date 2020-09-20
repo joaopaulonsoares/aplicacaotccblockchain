@@ -16,7 +16,7 @@ import GavelIcon from '@material-ui/icons/Gavel';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import {INFRACTION_LIST_PAGE_URL} from '../../../api_urls'
+import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,7 +64,7 @@ export default function NestedToolInfractions(props) {
         </ListItem>
 
           
-        <ListItem button component={Link}  className={classes.nested}>
+        <ListItem button component={Link} to={INFRACTION_REGISTER_PAGE_URL} className={classes.nested}>
         <ListItemIcon>
             <Icon>
             <PostAddIcon></PostAddIcon>

@@ -6,8 +6,9 @@ import MenuDrawer from './containers/MenuDrawer'
 import LoginPage from './containers/LoginPage'
 import InitialDashboard from './containers/InitialDashboard'
 import InfractionList from './containers/Infractions/InfractionList/index'
+import InfractionRegisterPage from './containers/Infractions/InfractionRegister/index'
 import axiosInstance from './auth/axiosApi';
-import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL} from './api_urls'
+import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL,INFRACTION_REGISTER_PAGE_URL} from './api_urls'
 
 
 class PrivateRouteAuth extends Component{
@@ -82,6 +83,9 @@ const AppRouter = (props) => (
                     </Route>
                     <Route exact path={INFRACTION_LIST_PAGE_URL}>
                         <InfractionList></InfractionList>
+                    </Route>
+                    <Route exact path={INFRACTION_REGISTER_PAGE_URL}>
+                        <InfractionRegisterPage></InfractionRegisterPage>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>
