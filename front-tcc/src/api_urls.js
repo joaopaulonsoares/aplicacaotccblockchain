@@ -12,6 +12,7 @@ module.exports = Object.freeze({
         INITIAL_PAGE_URL: '/', //Application Login and Initial page
         ESTUDIO_PAGE_URL: '/estudio', //Application Estudio Page
         DASHBOARD_BASE_URL: '/dashboard/',
+        INFRACTION_LIST_PAGE_URL: '/infraction_list',
 
 
     //API'S BACKEND
