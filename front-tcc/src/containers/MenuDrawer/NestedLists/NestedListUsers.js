@@ -9,13 +9,13 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PeopleIcon from '@material-ui/icons/People';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+
+import {DRIVER_REGISTER_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,7 +63,7 @@ export default function NestedToolListUser(props) {
         </ListItem>
 
           
-        <ListItem button component={Link}  className={classes.nested}>
+        <ListItem button component={Link} to={DRIVER_REGISTER_PAGE_URL} className={classes.nested}>
         <ListItemIcon>
             <Icon>
             <GroupAddIcon></GroupAddIcon>
