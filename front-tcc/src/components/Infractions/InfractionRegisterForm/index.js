@@ -39,46 +39,68 @@ const useStyles = makeStyles({
   },
   inputTextColor:{
     color:'green',
-  }
+  },
+  textField: {
+    minWidth: '30vh',
+  },
 });
 
 class InfractionRegisterForm extends React.Component {
     constructor(props){
         super(props);
         this.state = { 
-            sessionPlace: "Plenário", 
-            comission: "",
-            sessionDate: new Date(),
-            sessionType:"virtual" ,
-            acompanheTransmissionChannel:true,
-            twitterTransmissionChannel:false,
-            sessionIdDadosAbertos:""
+            vehiclePlate: "", 
+            infractionCategory: "",
+            dateInfraction: new Date(),
+            infractionPoints:"" ,
+            observations:"",
+            valueToPay:"",
+            statusOfInfraction:"",
+            infractorDriverAddress:""
         };
-        this.handleSessionDateChange = this.handleSessionDateChange.bind(this);
-        this.handleSessionTypeChange = this.handleSessionTypeChange.bind(this);
-        this.handleAcompanheTransmissionChannelChange = this.handleAcompanheTransmissionChannelChange.bind(this);
-        this.handleTwitterTransmissionChannelChange = this.handleTwitterTransmissionChannelChange.bind(this);
+        this.handleVehiclePlate = this.handleVehiclePlate.bind(this);
+        this.handleInfractionCategory = this.handleInfractionCategory.bind(this);
+        this.handleDateInfraction = this.handleDateInfraction.bind(this);
+        this.handleInfractionPoints = this.handleInfractionPoints.bind(this);
+        this.handleObservations = this.handleObservations.bind(this);
+        this.handleValueToPay = this.handleValueToPay.bind(this);
+        this.handleStatusOfInfraction = this.handleStatusOfInfraction.bind(this);
+        this.handleInfractorDriverAddress = this.handleInfractorDriverAddress.bind(this);
         this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
     }
 
-    handleSessionDateChange = (e) =>
-    {
-      this.setState({sessionDate: e});
-    };
-    
-    handleSessionTypeChange = (e) =>
-    {
-      this.setState({sessionType: e.target.value});
+    handleVehiclePlate= (e) => {
+        this.setState({vehiclePlate: e.target.value});
     };
 
-    handleAcompanheTransmissionChannelChange = (e) =>
-    {
-      this.setState({acompanheTransmissionChannel: e.target.checked});
+    handleInfractionCategory= (e) => {
+        console.log(e)
+        this.setState({infractionCategory: e.target.value});
     };
 
-    handleTwitterTransmissionChannelChange = (e) =>
-    {
-      this.setState({twitterTransmissionChannel: e.target.checked});
+    handleDateInfraction = (e) => {
+        console.log(e)
+        this.setState({dateInfraction: e});
+    };
+
+    handleInfractionPoints = (e) => {
+        this.setState({infractionPoints: e.target.value});
+    };
+
+    handleObservations = (e) => {
+        this.setState({observations: e.target.value});
+    };  
+  
+    handleValueToPay = (e) => {
+        this.setState({valueToPay: e.target.value});
+    };
+
+    handleStatusOfInfraction = (e) => {
+        this.setState({statusOfInfraction: e.target.value});
+    };
+
+    handleInfractorDriverAddress = (e) => {
+        this.setState({infractorDriverAddress: e.target.value});
     };
 
     createSession(callback){
@@ -105,132 +127,133 @@ class InfractionRegisterForm extends React.Component {
         })*/
     }
 
-    submitCreateSessionForm = (event) =>
-    {
+    submitCreateSessionForm = (event) => {
         event.preventDefault();
 
-        //this.checkIfSessionsAlreadyExistsInSILEG(() => {
-            this.createSession( () => {
-                window.location.reload(false);
-            });
-        //});
+        this.createSession( () => {
+            window.location.reload(false);
+        });
     };
 
     render(){
     const { classes } = this.props;
 
         return(
-        <Box>
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Box display="flex" justifyContent="flex-start" paddingBottom={3}>
-                    <Typography variant="h4" color="textSecondary">Registrar Infração</Typography>
-                </Box>
-            </Grid>
-
-            <Grid item xs={12}>
-                <Box display="block" justifyContent="flex-start" >
-                    <div><Typography variant="h6"> Local </Typography></div>
-                    <TextField
-                    className={classes.inputBorderColor}
-                    id="sessionPlace"
-                    variant="outlined"
-                    size="small"
-                    color="primary"
-                    value={this.state.sessionPlace}
-                    InputProps={{
-                        className: classes.inputTextColor
-                        }}
-                    />
-                </Box>
-            </Grid>
-            <Grid item xs={12}>
-                <Box display="block" justifyContent="flex-start" >
-                    <div><Typography variant="h6" > Categoria da Infração </Typography></div>
-                    <TextField id="selectComission" value="" variant="outlined" size="small" fullWidth={true}  select>
-                        <MenuItem value="">Selecione</MenuItem>
-                        <MenuItem value="leve">Leve</MenuItem>
-                        <MenuItem value="media">Média</MenuItem>
-                        <MenuItem value="grave">Grave</MenuItem>
-                        <MenuItem value="gravissima">Gravíssima</MenuItem>
-                    </TextField>
-                </Box>
-
-            </Grid>
-            <Grid item xs={12}>
-                <Box display="block" justifyContent="flex-start" >
-                    <div><Typography variant="h6"> Data </Typography></div>
-
-                        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBrLocale}>
-                        <KeyboardDatePicker
-                            disableToolbar
-                            variant="inline"
-                            format="dd/MM/yyyy"
-                            value={this.state.sessionDate}
-                            id="sessionDate"
-                            InputLabelProps={{
-                                shrink: true,
-                                }}
-                            inputVariant="outlined"
-                            size="small"
-                            onChange={(e)=>{this.handleSessionDateChange(e)}}
-                            />
-                        </MuiPickersUtilsProvider>
-
-                </Box>
-            </Grid>
-            <Grid item xs={12}>
-                <Box display="block" justifyContent="flex-start" >
-                    <div><Typography variant="h6"> Tipo de Sessão </Typography></div>
-                    <TextField id="sessionType" value={this.state.sessionType} variant="outlined" size="small" fullWidth={true} select onChange={(e)=>{this.handleSessionTypeChange(e)}}>
-                        <MenuItem value="virtual">Virtual</MenuItem>
-                        <MenuItem value="presential">Presencial</MenuItem>
-                    </TextField>
-                </Box>
-            </Grid>
-            <Grid item xs={12}>
-                        <Box display="block" justifyContent="flex-start" >
-                            <div><Typography variant="h6"> Canais de transmissão </Typography></div>
-                            <FormGroup aria-label="position" row>
-                                <FormControlLabel
-                                id="acompanheTransmissionChannel"
-                                control={
-                                    <Checkbox color="primary" checked={this.state.acompanheTransmissionChannel}  
-                                               onChange={(e)=>{this.handleAcompanheTransmissionChannelChange(e)}} 
-                                               name="checkedAcompanheTransmissionChannel"/>
-                                }
-                                label="Acompanhe"
-                                className={classes.inputBorderColor}
-                               
-                                />
-                                <FormControlLabel
-                                id="twitterTransmissionChannel"
-                                control={
-                                    <Checkbox color="primary" checked={this.state.twitterTransmissionChannel}  
-                                               onChange={(e)=>{this.handleTwitterTransmissionChannelChange(e)}} 
-                                               name="checkedTwitterTransmissionChannel"/>
-                                }
-                                label="Twitter"
-
-                                />
-                            </FormGroup>
+        <Box width={"100%"} display="flex" justifyContent="center">
+            <Box width={"50%"}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Box display="flex" justifyContent="center" paddingBottom={8}>
+                            <Typography variant="h2" color="textSecondary">Registrar Infração</Typography>
                         </Box>
                     </Grid>
 
-        </Grid>
-        <Box pt={4} pb={8}>
-            <Button
-                id="submitButton"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<SendIcon />}
-                onClick={(e) => { this.submitCreateSessionForm(e) }}
-            >
-                Iniciar Sessão
-            </Button>
+                    <Grid item xs={6}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Placa do Veículo" 
+                            className={classes.inputBorderColor}
+                            id="vehiclePlate"
+                            variant="outlined"
+                            color="primary"
+                            fullWidth={true}
+                            onChange={(e)=>{this.handleVehiclePlate(e)}}
+                            value={this.state.vehiclePlate}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box display="block" justifyContent="flex-start" width="100%">
+                            <TextField id="selectInfractionCategory" 
+                            label="Categoria da Infração"
+                            variant="outlined" fullWidth={true} select
+                            className={classes.textField}
+                            onChange={(e)=>{this.handleInfractionCategory(e)}}
+                            value={this.state.infractionCategory}
+                            >
+                                <MenuItem value="">Selecione</MenuItem>
+                                <MenuItem value="leve">Leve</MenuItem>
+                                <MenuItem value="media">Média</MenuItem>
+                                <MenuItem value="grave">Grave</MenuItem>
+                                <MenuItem value="gravissima">Gravíssima</MenuItem>
+                            </TextField>
+                        </Box>
+
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box display="block" justifyContent="flex-start" >
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBrLocale}>
+                                <KeyboardDatePicker
+                                    label="Data da Infração"
+                                    disableToolbar
+                                    fullWidth={true}
+                                    variant="inline"
+                                    format="dd/MM/yyyy"
+                                    value={this.state.dateInfraction}
+                                    id="infractionDate"
+                                    inputVariant="outlined"
+                            
+                                    onChange={(e)=>{this.handleDateInfraction(e)}}
+                                    />
+                                </MuiPickersUtilsProvider>
+
+                        </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Pontuação da Infração" 
+                            className={classes.inputBorderColor}
+                            fullWidth={true}
+                            id="infractionPoints"
+                            variant="outlined"
+            
+                            color="primary"
+                            type="number"
+                            onChange={(e)=>{this.handleInfractionPoints(e)}}
+                            value={this.state.infractionPoints}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Observações" 
+                            className={classes.inputBorderColor}
+                            fullWidth={true}
+                            id="observationsField"
+                            variant="outlined"
+                            color="primary"
+                            onChange={(e)=>{this.handleObservations(e)}}
+                            value={this.state.observations}
+                            multiline
+                            rows={5}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Chave(address) do infrator" 
+                            className={classes.inputBorderColor}
+                            id="driverAddress"
+                            variant="outlined"
+                            color="primary"
+                            fullWidth={true}
+                            onChange={(e)=>{this.handleInfractorDriverAddress(e)}}
+                            value={this.state.infractorDriverAddress}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box display="flex" justifyContent="center" paddingTop={3}>
+                            <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Infração</Button>
+                        </Box>
+                    </Grid>
+                </Grid>
+
+            </Box>
         </Box>
-    </Box>
 
         )
     }
