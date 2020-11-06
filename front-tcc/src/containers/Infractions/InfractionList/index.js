@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
 import InfractionListTable from '../../../components/Infractions/InfractionListTable/index.js'
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = (theme) => ({
   "@global": {
@@ -49,20 +50,32 @@ class InfractionList extends Component {
     this.state = {
       openSnackBar: false,
       snackBarMessageError: "",
+      isFetchingInfo:true,
+      infractionsList:[]
     };
+  }
+
+  async getInfractionListData(){
+    const infractionsCount =  await this.props.contract.methods.ticketsCount().call()
+    console.log("Infrações Registradas page: ", infractionsCount)
+
+    // Load infraction -> WORKING
+    for (var i = 0; i < infractionsCount; i++) {
+      const authoritie = await this.props.contract.methods.tickets(i).call()
+      this.setState({
+        infractionsList: [...this.state.infractionsList, authoritie]
+      })
+    }
+    console.log("Lista de infrações")
+    console.log(this.state.infractionsList)
+    this.setState({isFetchingInfo:false});
   }
 
   componentDidMount() {
     this._isMounted = true;
-    /*
-    if(this._isMounted){
-      // If we need to wait for something to full render before render the page
-      this.checkIfUserIsAuthenticaded(() => {
-          this.setState({isLoadingPage:false});
-      });
-    }
-    */
-    this.setState({ isLoadingPage: false });
+    this.getInfractionListData()
+    
+    //this.setState({ isLoadingPage: false });
   }
 
   componentWillUnmount() {
@@ -76,10 +89,14 @@ class InfractionList extends Component {
   render() {
     const textReportUser = "Para um melhor desempenho do relatório as consultas de dados estão limitadas a uma paginação de 100 linhas, logo quando for feito o download  ou outra consulta dos dados os resultados serão limitados a essas informações carregadas. Estamos trabalhando em uma melhor implementação dessa visualização."
     const textReportRoom = "Todos os dados estão sendo buscados. A consulta deve demorar alguns instantes." 
+
+    if(this.state.isFetchingInfo){
+      return <LinearProgress></LinearProgress>
+    }
     return (
       <React.Fragment>
           <Box>
-            <InfractionListTable></InfractionListTable>
+            <InfractionListTable rows={this.state.infractionsList}></InfractionListTable>
           </Box>
         </React.Fragment>
     );

@@ -7,11 +7,6 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem';
-import SendIcon from '@material-ui/icons/Send';
-    
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -20,6 +15,8 @@ import ptBrLocale from "date-fns/locale/pt-BR";
 //import axiosInstance from '../../../auth/axiosApi.js'
 //import {API_SESSIONS_URL} from '../../../api_urls'
 
+import Web3 from 'web3'
+import {APP_ABI, APP_ADDRESS} from '../../../config.js'
 
 const useStyles = makeStyles({
   root: {
@@ -101,36 +98,39 @@ class DriverRegisterForm extends React.Component {
         this.setState({infractorDriverAddress: e.target.value});
     };
 
-    createSession(callback){
-        /*axiosInstance.post(API_SESSIONS_URL, {
-            location: "plenary",
-            date:new Date(this.state.sessionDate).toISOString().slice(0,10),
-            type_session: this.state.sessionType,
-            situation_session:"pre_session",
-            resume: "Resumo",
-            enable:true
-            }).then(
-                result => {
-                    if(result.status===201){
-                        //alert("Sessão criada com sucesso")
-                        console.log("Dashboard criado com sucesso")
-                    }else{
-                        console.log("Falha ao criar dashboard")
-                    }
-                    //callback();
-                }   
-        )
-        /*.catch (error => {
-            throw error;
-        })*/
+
+    async registerDriver(){
+        const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+        const network =  web3.eth.net.getNetworkType();
+        //Fetch account
+        const accounts = await web3.eth.getAccounts();
+        //setAccount(accounts[0])
+        this.setState({loggedAccount:accounts[0]})
+        console.log(accounts[0])
+        
+        //Instancia o contrato
+        const trafficApp = new web3.eth.Contract(APP_ABI,APP_ADDRESS)
+        this.setState({trafficApp})
+        const ticketsCount =  await trafficApp.methods.ticketsCount().call()
+        console.log(ticketsCount)
+
+        for(var i = 0; i <= ticketsCount; i++) {
+            var driversInfo =  await trafficApp.methods.drivers(i).call()
+            console.log(driversInfo)
+        }
+
+        //const registerDriver = await trafficApp.methods.registerDriver("Joao",0,'0xF879DEA577453A50b7bE8a4deA0928c118C0A574').call()
+        //console.log(registerDriver)
     }
+
+    componentDidMount(){
+        this.registerDriver();
+    }
+    
 
     submitCreateSessionForm = (event) => {
         event.preventDefault();
 
-        this.createSession( () => {
-            window.location.reload(false);
-        });
     };
 
     render(){

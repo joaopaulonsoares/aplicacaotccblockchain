@@ -8,17 +8,16 @@ import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
-import SendIcon from '@material-ui/icons/Send';
-import * as moment from 'moment'
-    
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import Web3 from 'web3'
+import {APP_ABI, APP_ADDRESS} from '../../../config.js'
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ptBrLocale from "date-fns/locale/pt-BR";
+
 //import axiosInstance from '../../../auth/axiosApi.js'
 //import {API_SESSIONS_URL} from '../../../api_urls'
 
@@ -56,7 +55,8 @@ class InfractionRegisterForm extends React.Component {
             observations:"",
             valueToPay:"",
             statusOfInfraction:"",
-            infractorDriverAddress:""
+            infractorDriverAddress:"",
+            loggedAccount:""
         };
         this.handleVehiclePlate = this.handleVehiclePlate.bind(this);
         this.handleInfractionCategory = this.handleInfractionCategory.bind(this);
@@ -67,6 +67,7 @@ class InfractionRegisterForm extends React.Component {
         this.handleStatusOfInfraction = this.handleStatusOfInfraction.bind(this);
         this.handleInfractorDriverAddress = this.handleInfractorDriverAddress.bind(this);
         this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
+        this.loadMetamaskInfo = this.loadMetamaskInfo.bind(this);
     }
 
     handleVehiclePlate= (e) => {
@@ -130,10 +131,42 @@ class InfractionRegisterForm extends React.Component {
     submitCreateSessionForm = (event) => {
         event.preventDefault();
 
-        this.createSession( () => {
-            window.location.reload(false);
-        });
+        console.log("Botão click")
+        //this.createSession( () => {
+            //window.location.reload(false);
+        //});
     };
+
+    async loadMetamaskInfo(){
+        const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+        const network =  web3.eth.net.getNetworkType();
+        //Fetch account
+        const accounts = web3.eth.getAccounts();
+        //setAccount(accounts[0])
+        this.setState({loggedAccount:accounts[0]})
+        console.log(accounts[0])
+        
+        //Instancia o contrato
+        const trafficApp = new web3.eth.Contract(APP_ABI,APP_ADDRESS)
+        this.setState({trafficApp})
+        const ticketsCount =  await trafficApp.methods.ticketsCount().call()
+        console.log(ticketsCount)
+
+        /*
+        function registerInfraction(string memory _vehiclePlate, uint _infractionCategory,
+                                string memory _dateInfraction, uint _infractionPoints,
+                                string memory _observations, uint _valueToPay,
+                                uint _statusOfInfraction, address _infractorDriverAddress
+        */
+
+        //register
+         //const registerInfraction = trafficApp.methods.registerInfraction("ABC-1234",1,"01/01/2019",5,"Estava a 110 na via de 80",1,0,0x49c5b42DeD7c979A0fc825A12ddba4529B846aA3).send();
+    }
+
+    componentDidMount(){
+        this.loadMetamaskInfo();
+    }
+    
 
     render(){
     const { classes } = this.props;

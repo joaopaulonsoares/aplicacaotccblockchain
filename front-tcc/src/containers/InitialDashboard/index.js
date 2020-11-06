@@ -4,8 +4,9 @@ import Box from '@material-ui/core/Box';
 import {
   withStyles
 } from '@material-ui/core/styles';
+import Web3 from 'web3'
 
-
+//https://www.youtube.com/watch?v=LzdMosLzj80
 const useStyles = theme => ({
   '@global': {
     body: {
@@ -43,29 +44,28 @@ class InitialDashboard extends Component {
     super(props);
     this.state = {
       openSnackBar:false,
-      snackBarMessageError:""
+      snackBarMessageError:"",
+      web3:null,
+      accounts:null,
+      contract:null
     };
   }
 
 
-  componentDidMount() {
-    this._isMounted = true;
-    /*
-    if(this._isMounted){
-      // If we need to wait for something to full render before render the page
-      this.checkIfUserIsAuthenticaded(() => {
-
-        this.checkIfUserIsAdmin( () => {
-
-          this.setState({isLoadingPage:false});
-
-        });
-
-      });
+  async componentDidMount() {
+    try{
+      let web3 ;
+      if(window.ethereum){
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+       console.log(web3)
+        //can use web3 with metamask
+      }else if(window.web3){
+        web3 = new Web3(window.web3.currentProvider)
+      }
+    }catch(e){
+      //teste
     }
-    */
-    this.setState({isLoadingPage:false});
-
   }
 
   componentWillUnmount() {
@@ -102,3 +102,20 @@ class InitialDashboard extends Component {
 }
 
 export default withStyles(useStyles)(InitialDashboard);
+
+/*
+  componentDidMount() {
+    this._isMounted = true;
+    
+    if(this._isMounted){
+      // If we need to wait for something to full render before render the page
+      this.checkIfUserIsAuthenticaded(() => {
+
+
+      });
+    }
+    
+   this.setState({isLoadingPage:false});
+
+  }
+  */

@@ -34,42 +34,11 @@ class InfractionListTable extends Component {
     };
   }
 
-  /*getRooms = (url, rooms, resolve, reject) => {
-    axios.get(url)
-    .then(response => {
-      const retrivedRooms = rooms.concat(response.data.results)
-      if (response.data.next !== null) {
-        var nextUrl = (response.data.next).replace("http","https")
 
-        this.setState({currentPage: ((response.data.next).match(/(\d+)/))})
-        this.getRooms(nextUrl, retrivedRooms, resolve, reject)
-      } else {
-        resolve(retrivedRooms)
-      }
-    })
-    .catch(error => {
-      console.log(error)
-      reject('Something wrong. Please refresh the page and try again.')
-    })
-  }*/
-
-/*
-  loadDataInTable(callback){
-    const url = new URL(AUDIENCIAS_ROOM_API_URL)
-
-    new Promise((resolve, reject) => {
-      this.getRooms(url, [], resolve, reject)
-    })
-    .then(response => {
-      this.setState({rows: response})
-      callback()
-    })
-    //callback();
-  }*/
-  
   componentDidMount() {
     this._isTableMounted = true;
-    
+    console.log(this.props)
+
     if(this._isTableMounted){
       //this.loadDataInTable( () => {
         this.setState({isLoadingTable:false});
@@ -97,7 +66,7 @@ class InfractionListTable extends Component {
               <MaterialTable
                 columns={this.columns}
                 tableRef={tableRef}
-                data={this.state.rows}
+                data={this.props.rows}
                 actions={[
                   {
                     icon: 'refresh',
@@ -135,7 +104,7 @@ class InfractionListTable extends Component {
                 }}
                 title="Infrações Registradas"
                 
-                onRowClick={(event, rowData, togglePanel) => togglePanel()}
+                //onRowClick={(event, rowData, togglePanel) => togglePanel()}
               />
           </Box>
       )

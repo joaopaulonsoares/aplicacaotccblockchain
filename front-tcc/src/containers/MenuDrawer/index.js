@@ -36,18 +36,7 @@ export default function MenuDrawer(props) {
     setOpen(false);
   }; 
   
- async function loadMetamaskInfo(){
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const network = await web3.eth.net.getNetworkType();
-    //Fetch account
-    const accounts = await web3.eth.getAccounts();
-    setAccount(accounts[0])
-    console.log(accounts)
-  }
 
-  useEffect(() => {
-     loadMetamaskInfo();
-  });
 
 
   return (
@@ -64,7 +53,7 @@ export default function MenuDrawer(props) {
             <MenuIcon></MenuIcon>
           </IconButton>
           <Typography component="h1" variant="h6" noWrap className={classes.title}>
-            Olá, {account}
+            Olá, {props.account}
           </Typography>
         </Toolbar>
       </AppBar>

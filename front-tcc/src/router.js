@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import EstudioAcompanhePageContainer from './containers/EstudioAcompanhePageContainer';
 import LoginScreen from "./containers/LoginScreenContainer";
@@ -71,31 +71,42 @@ class PrivateRouteAuth extends Component{
 
 }
 
-const AppRouter = (props) => (
-    <Router>
+function AppRouter(props){
+
+
+    useEffect(() => {
+
+      }, [props])
+
+    //console.log(props)
+    return(
+        <Router>
         <Switch>
             <Route exact path={INITIAL_PAGE_URL}>
                 <LoginPage></LoginPage>
             </Route>
             {/*Authenticated routes */}
             <PrivateRouteAuth>
-                <MenuDrawer>
+                <MenuDrawer account={props.account}>
                     <Route exact path={DASHBOARD_BASE_URL}>
                         <InitialDashboard></InitialDashboard>
                     </Route>
                     <Route exact path={INFRACTION_LIST_PAGE_URL}>
-                        <InfractionList></InfractionList>
+                        <InfractionList contract={props.contract}></InfractionList>
                     </Route>
                     <Route exact path={INFRACTION_REGISTER_PAGE_URL}>
                         <InfractionRegisterPage></InfractionRegisterPage>
                     </Route>
                     <Route exact path={DRIVER_REGISTER_PAGE_URL}>
-                        <DriverRegisterPage></DriverRegisterPage>
+                        <DriverRegisterPage contract={props.contract}></DriverRegisterPage>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>
         </Switch>
     </Router>
-);
+
+    );
+}
+
 
 export default AppRouter
