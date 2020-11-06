@@ -79,7 +79,7 @@ class InfractionListTable extends Component {
                   sorting: true,
                   exportButton: true,
                   exportAllData: true,
-                  exportFileName: "salas_audiencias_interativas",
+                  exportFileName: "infrações de trânsito",
                   pageSize:10,
                   pageSizeOptions:[5, 10, 20, 30, 40, 50, 100,1300],
                   emptyRowsWhenPaging:false,

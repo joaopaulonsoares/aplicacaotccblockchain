@@ -98,7 +98,7 @@ function AppRouter(props){
                         <InfractionRegisterPage></InfractionRegisterPage>
                     </Route>
                     <Route exact path={DRIVER_REGISTER_PAGE_URL}>
-                        <DriverRegisterPage contract={props.contract}></DriverRegisterPage>
+                        <DriverRegisterPage contract={props.contract} account={props.account}></DriverRegisterPage>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>

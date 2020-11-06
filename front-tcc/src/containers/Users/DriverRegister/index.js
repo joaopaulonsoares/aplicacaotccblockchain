@@ -15,6 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import DriverRegisterForm from '../../../components/Users/DriverRegisterForm/index'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = (theme) => ({
   "@global": {
@@ -47,90 +48,54 @@ class DriverRegisterPage extends Component {
   constructor(props){
     super(props);
     this.state = { 
-        vehiclePlate: "", 
-        infractionCategory: "",
-        dateInfraction: new Date(),
-        infractionPoints:"" ,
-        observations:"",
-        valueToPay:"",
-        statusOfInfraction:"",
-        infractorDriverAddress:"",
-        contract:this.props.contract
+        driverName:"",
+        driverAddress:"",
+        contract:this.props.contract,
+        waitingRegisterDriver:false,
+        hashOfPendingRegisterTransaction:""
     };
-    this.handleVehiclePlate = this.handleVehiclePlate.bind(this);
-    this.handleInfractionCategory = this.handleInfractionCategory.bind(this);
-    this.handleDateInfraction = this.handleDateInfraction.bind(this);
-    this.handleInfractionPoints = this.handleInfractionPoints.bind(this);
-    this.handleObservations = this.handleObservations.bind(this);
-    this.handleValueToPay = this.handleValueToPay.bind(this);
-    this.handleStatusOfInfraction = this.handleStatusOfInfraction.bind(this);
-    this.handleInfractorDriverAddress = this.handleInfractorDriverAddress.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.handleDriverAddress = this.handleDriverAddress.bind(this);
+    this.registerDriver = this.registerDriver.bind(this);
     this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
 }
 
-handleVehiclePlate= (e) => {
-    this.setState({vehiclePlate: e.target.value});
-};
 
-handleInfractionCategory= (e) => {
-    console.log(e)
-    this.setState({infractionCategory: e.target.value});
-};
-
-handleDateInfraction = (e) => {
-    console.log(e)
-    this.setState({dateInfraction: e});
-};
-
-handleInfractionPoints = (e) => {
-    this.setState({infractionPoints: e.target.value});
-};
-
-handleObservations = (e) => {
-    this.setState({observations: e.target.value});
+handleName = (e) => {
+    this.setState({driverName: e.target.value});
 };  
 
-handleValueToPay = (e) => {
-    this.setState({valueToPay: e.target.value});
-};
 
-handleStatusOfInfraction = (e) => {
-    this.setState({statusOfInfraction: e.target.value});
-};
-
-handleInfractorDriverAddress = (e) => {
-    this.setState({infractorDriverAddress: e.target.value});
+handleDriverAddress = (e) => {
+    this.setState({driverAddress: e.target.value});
 };
 
 
 async registerDriver(){
-  var contract = this.props.contract;
-  const ticketsCount =  await contract.methods.ticketsCount().call()
-  console.log(ticketsCount)
-    /*const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const network =  web3.eth.net.getNetworkType();
-    //Fetch account
-    const accounts = await web3.eth.getAccounts();
-    //setAccount(accounts[0])
-    this.setState({loggedAccount:accounts[0]})
-    console.log(accounts[0])
+    //var contract = this.props.contract;
+    //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+    var driverName = this.state.driverName;
+    var driverAddress = this.state.driverAddress;
     
-    //Instancia o contrato
-    const trafficApp = new web3.eth.Contract(APP_ABI,APP_ADDRESS)
-    this.setState({trafficApp})
-    const ticketsCount =  await trafficApp.methods.ticketsCount().call()
-    console.log(ticketsCount)
-
-    for(var i = 0; i <= ticketsCount; i++) {
-        var driversInfo =  await trafficApp.methods.drivers(i).call()
-        console.log(driversInfo)
-    }
-
-    //const registerDriver = await trafficApp.methods.registerDriver("Joao",0,'0xF879DEA577453A50b7bE8a4deA0928c118C0A574').call()
-    //console.log(registerDriver)*/
+    this.setState({waitingRegisterDriver:true})
+    
+    const registerDriver = await this.props.contract.methods.registerDriver(driverName,0,driverAddress).send({ from: this.props.account })
+    .on('transactionHash', function(hash){
+        console.log("hash", hash)
+    })
+    .on('confirmation', function(confirmationNumber, receipt){
+        window.alert("Motorista Registrado com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
+        //console.log(receipt)
+        this.setState({waitingRegisterDriver:false })
+    })
+    
+    this.setState({waitingRegisterDriver:false })
+    console.log(registerDriver)
 }
+
 async getInfo(){
     const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+    
     console.log("Autoridades Registradas driver page: ", authoritiesCount)
 }
 
@@ -143,13 +108,14 @@ this.getInfo()
 }
 
 
-submitCreateSessionForm = (event) => {
+async submitCreateSessionForm(event){
     event.preventDefault();
-
+    console.log("Chamou")
+    await this.registerDriver()
 };
 
 render(){
-const { classes } = this.props;
+    const { classes } = this.props;
 
     return(
     <Box width={"100%"} display="flex" justifyContent="center">
@@ -171,7 +137,7 @@ const { classes } = this.props;
                         id="driverName"
                         variant="outlined"
                         color="primary"
-                        onChange={(e)=>{this.handleObservations(e)}}
+                        onChange={(e)=>{this.handleName(e)}}
                         value={this.state.observations}
                         />
                     </Box>
@@ -185,14 +151,19 @@ const { classes } = this.props;
                         variant="outlined"
                         color="primary"
                         fullWidth={true}
-                        onChange={(e)=>{this.handleInfractorDriverAddress(e)}}
+                        onChange={(e)=>{this.handleDriverAddress(e)}}
                         value={this.state.infractorDriverAddress}
                         />
                     </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <Box display="flex" justifyContent="center" paddingTop={3}>
-                        <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Motorista</Button>
+                       
+                        {this.state.waitingRegisterDriver ? 
+                            (<div><CircularProgress></CircularProgress><br></br><Typography variant="body" color="textSecondary">Transação em andamento</Typography> </div>
+                            
+                            ) : 
+                                ( <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Motorista</Button> ) }
                     </Box>
                 </Grid>
             </Grid>
