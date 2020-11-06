@@ -15,7 +15,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import {DRIVER_REGISTER_PAGE_URL} from '../../../api_urls'
+import {DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,7 +53,7 @@ export default function NestedToolListUser(props) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
 
-        <ListItem button component={Link}  className={classes.nested}>
+        <ListItem button component={Link} to={DRIVER_LIST_PAGE_URL} className={classes.nested}>
             <ListItemIcon>
               <Icon>
                 <PeopleIcon></PeopleIcon>

@@ -46,133 +46,132 @@ const useStyles = (theme) => ({
 
 class DriverRegisterPage extends Component {
   constructor(props){
-    super(props);
-    this.state = { 
-        driverName:"",
-        driverAddress:"",
-        contract:this.props.contract,
-        waitingRegisterDriver:false,
-        hashOfPendingRegisterTransaction:""
+        super(props);
+        this.state = { 
+            driverName:"",
+            driverAddress:"",
+            contract:this.props.contract,
+            waitingRegisterDriver:false,
+            hashOfPendingRegisterTransaction:""
+        };
+        this.handleName = this.handleName.bind(this);
+        this.handleDriverAddress = this.handleDriverAddress.bind(this);
+        this.registerDriver = this.registerDriver.bind(this);
+        this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
+    }
+
+
+    handleName = (e) => {
+        this.setState({driverName: e.target.value});
+    };  
+
+
+    handleDriverAddress = (e) => {
+        this.setState({driverAddress: e.target.value});
     };
-    this.handleName = this.handleName.bind(this);
-    this.handleDriverAddress = this.handleDriverAddress.bind(this);
-    this.registerDriver = this.registerDriver.bind(this);
-    this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
-}
 
 
-handleName = (e) => {
-    this.setState({driverName: e.target.value});
-};  
-
-
-handleDriverAddress = (e) => {
-    this.setState({driverAddress: e.target.value});
-};
-
-
-async registerDriver(){
-    //var contract = this.props.contract;
-    //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
-    var driverName = this.state.driverName;
-    var driverAddress = this.state.driverAddress;
-    
-    this.setState({waitingRegisterDriver:true})
-    
-    const registerDriver = await this.props.contract.methods.registerDriver(driverName,0,driverAddress).send({ from: this.props.account })
-    .on('transactionHash', function(hash){
-        console.log("hash", hash)
-    })
-    .on('confirmation', function(confirmationNumber, receipt){
-        window.alert("Motorista Registrado com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
-        //console.log(receipt)
+    async registerDriver(){
+        //var contract = this.props.contract;
+        //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+        var driverName = this.state.driverName;
+        var driverAddress = this.state.driverAddress;
+        
+        this.setState({waitingRegisterDriver:true})
+        
+        const registerDriver = await this.props.contract.methods.registerDriver(driverName,0,driverAddress).send({ from: this.props.account })
+        .on('transactionHash', function(hash){
+            console.log("hash", hash)
+        })
+        .on('confirmation', function(confirmationNumber, receipt){
+            window.alert("Motorista Registrado com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
+            //console.log(receipt)
+            this.setState({waitingRegisterDriver:false })
+        })
+        
         this.setState({waitingRegisterDriver:false })
-    })
-    
-    this.setState({waitingRegisterDriver:false })
-    console.log(registerDriver)
-}
+        console.log(registerDriver)
+    }
 
-async getInfo(){
-    const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
-    
-    console.log("Autoridades Registradas driver page: ", authoritiesCount)
-}
+    async getInfo(){
+        const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+        
+        console.log("Autoridades Registradas driver page: ", authoritiesCount)
+    }
 
-componentDidMount(){
+    componentDidMount(){
 
-  //this.registerDriver();
-console.log("Contrato info", this.props.contract)
-this.getInfo()
+    //this.registerDriver();
+    console.log("Contrato info", this.props.contract)
+    this.getInfo()
 
-}
+    }
 
 
-async submitCreateSessionForm(event){
-    event.preventDefault();
-    console.log("Chamou")
-    await this.registerDriver()
-};
+    async submitCreateSessionForm(event){
+        event.preventDefault();
+        console.log("Chamou")
+        await this.registerDriver()
+    };
 
-render(){
-    const { classes } = this.props;
+    render(){
+        const { classes } = this.props;
 
-    return(
-    <Box width={"100%"} display="flex" justifyContent="center">
-        <Box width={"50%"}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Box display="flex" justifyContent="center" paddingBottom={8}>
-                        <Typography variant="h2" color="textSecondary">Registrar Motorista</Typography>
-                    </Box>
-                </Grid>
+        return(
+        <Box width={"100%"} display="flex" justifyContent="center">
+            <Box width={"50%"}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Box display="flex" justifyContent="center" paddingBottom={8}>
+                            <Typography variant="h2" color="textSecondary">Registrar Motorista</Typography>
+                        </Box>
+                    </Grid>
 
 
-                <Grid item xs={12}>
-                    <Box display="block" justifyContent="flex-start" >
-                        <TextField
-                        label="Nome do Motorista" 
-                        className={classes.inputBorderColor}
-                        fullWidth={true}
-                        id="driverName"
-                        variant="outlined"
-                        color="primary"
-                        onChange={(e)=>{this.handleName(e)}}
-                        value={this.state.observations}
-                        />
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box display="block" justifyContent="flex-start" >
-                        <TextField
-                        label="Chave do motorista" 
-                        className={classes.inputBorderColor}
-                        id="driverAddress"
-                        variant="outlined"
-                        color="primary"
-                        fullWidth={true}
-                        onChange={(e)=>{this.handleDriverAddress(e)}}
-                        value={this.state.infractorDriverAddress}
-                        />
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box display="flex" justifyContent="center" paddingTop={3}>
-                       
-                        {this.state.waitingRegisterDriver ? 
-                            (<div><CircularProgress></CircularProgress><br></br><Typography variant="body" color="textSecondary">Transação em andamento</Typography> </div>
-                            
-                            ) : 
+                    <Grid item xs={12}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Nome do Motorista" 
+                            className={classes.inputBorderColor}
+                            fullWidth={true}
+                            id="driverName"
+                            variant="outlined"
+                            color="primary"
+                            onChange={(e)=>{this.handleName(e)}}
+                            value={this.state.observations}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Chave do motorista" 
+                            className={classes.inputBorderColor}
+                            id="driverAddress"
+                            variant="outlined"
+                            color="primary"
+                            fullWidth={true}
+                            onChange={(e)=>{this.handleDriverAddress(e)}}
+                            value={this.state.infractorDriverAddress}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box display="flex" justifyContent="center" paddingTop={3}>
+                        
+                            {this.state.waitingRegisterDriver ? 
+                                (<div><CircularProgress></CircularProgress><br></br><Typography variant="body" color="textSecondary">Transação em andamento</Typography> </div>)
+                                 : 
                                 ( <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Motorista</Button> ) }
-                    </Box>
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
 
+            </Box>
         </Box>
-    </Box>
 
-    )
-}
+        )
+    }
 
 
 }

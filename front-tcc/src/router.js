@@ -8,9 +8,10 @@ import InitialDashboard from './containers/InitialDashboard'
 import InfractionList from './containers/Infractions/InfractionList/index'
 import InfractionRegisterPage from './containers/Infractions/InfractionRegister/index'
 import DriverRegisterPage from './containers/Users/DriverRegister/index'
+import DriverList from './containers/Users/DriverList/index'
 import axiosInstance from './auth/axiosApi';
 import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL,INFRACTION_REGISTER_PAGE_URL,
-    DRIVER_REGISTER_PAGE_URL} from './api_urls'
+    DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL} from './api_urls'
 
 
 class PrivateRouteAuth extends Component{
@@ -99,6 +100,9 @@ function AppRouter(props){
                     </Route>
                     <Route exact path={DRIVER_REGISTER_PAGE_URL}>
                         <DriverRegisterPage contract={props.contract} account={props.account}></DriverRegisterPage>
+                    </Route>
+                    <Route exact path={DRIVER_LIST_PAGE_URL}>
+                        <DriverList contract={props.contract} account={props.account}></DriverList>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>
