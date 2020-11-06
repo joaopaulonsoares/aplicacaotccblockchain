@@ -78,7 +78,7 @@ class InfractionRegisterPage extends Component {
     return (
       <React.Fragment>
           <Box>
-            <InfractionRegisterForm></InfractionRegisterForm>
+            <InfractionRegisterForm contract={this.props.contract} account={this.props.account}></InfractionRegisterForm>
           </Box>
         </React.Fragment>
     );

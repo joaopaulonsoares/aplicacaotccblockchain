@@ -96,7 +96,7 @@ function AppRouter(props){
                         <InfractionList contract={props.contract}></InfractionList>
                     </Route>
                     <Route exact path={INFRACTION_REGISTER_PAGE_URL}>
-                        <InfractionRegisterPage></InfractionRegisterPage>
+                        <InfractionRegisterPage contract={props.contract} account={props.account}></InfractionRegisterPage>
                     </Route>
                     <Route exact path={DRIVER_REGISTER_PAGE_URL}>
                         <DriverRegisterPage contract={props.contract} account={props.account}></DriverRegisterPage>

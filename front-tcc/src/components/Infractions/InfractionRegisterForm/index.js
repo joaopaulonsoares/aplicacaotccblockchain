@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Web3 from 'web3'
 import {APP_ABI, APP_ADDRESS} from '../../../config.js'
@@ -56,7 +57,8 @@ class InfractionRegisterForm extends React.Component {
             valueToPay:"",
             statusOfInfraction:"",
             infractorDriverAddress:"",
-            loggedAccount:""
+            loggedAccount:"",
+            waitingInfractionRegister:false
         };
         this.handleVehiclePlate = this.handleVehiclePlate.bind(this);
         this.handleInfractionCategory = this.handleInfractionCategory.bind(this);
@@ -67,20 +69,20 @@ class InfractionRegisterForm extends React.Component {
         this.handleStatusOfInfraction = this.handleStatusOfInfraction.bind(this);
         this.handleInfractorDriverAddress = this.handleInfractorDriverAddress.bind(this);
         this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
-        this.loadMetamaskInfo = this.loadMetamaskInfo.bind(this);
+        this.registerInfraction = this.registerInfraction.bind(this);
     }
 
     handleVehiclePlate= (e) => {
-        this.setState({vehiclePlate: e.target.value});
+        this.setState({vehiclePlate: e.target.value.toUpperCase()});
     };
 
     handleInfractionCategory= (e) => {
-        console.log(e)
+        console.log(e.target.value)
         this.setState({infractionCategory: e.target.value});
     };
 
     handleDateInfraction = (e) => {
-        console.log(e)
+
         this.setState({dateInfraction: e});
     };
 
@@ -104,67 +106,56 @@ class InfractionRegisterForm extends React.Component {
         this.setState({infractorDriverAddress: e.target.value});
     };
 
-    createSession(callback){
-        /*axiosInstance.post(API_SESSIONS_URL, {
-            location: "plenary",
-            date:new Date(this.state.sessionDate).toISOString().slice(0,10),
-            type_session: this.state.sessionType,
-            situation_session:"pre_session",
-            resume: "Resumo",
-            enable:true
-            }).then(
-                result => {
-                    if(result.status===201){
-                        //alert("Sessão criada com sucesso")
-                        console.log("Dashboard criado com sucesso")
-                    }else{
-                        console.log("Falha ao criar dashboard")
-                    }
-                    //callback();
-                }   
-        )
-        /*.catch (error => {
-            throw error;
-        })*/
-    }
 
     submitCreateSessionForm = (event) => {
         event.preventDefault();
 
-        console.log("Botão click")
-        //this.createSession( () => {
-            //window.location.reload(false);
-        //});
+        console.log("Botão click");
+        this.registerInfraction();
     };
 
-    async loadMetamaskInfo(){
-        const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-        const network =  web3.eth.net.getNetworkType();
-        //Fetch account
-        const accounts = web3.eth.getAccounts();
-        //setAccount(accounts[0])
-        this.setState({loggedAccount:accounts[0]})
-        console.log(accounts[0])
+    async registerInfraction(){
         
-        //Instancia o contrato
-        const trafficApp = new web3.eth.Contract(APP_ABI,APP_ADDRESS)
-        this.setState({trafficApp})
-        const ticketsCount =  await trafficApp.methods.ticketsCount().call()
-        console.log(ticketsCount)
+        var vehiclePlate = this.state.vehiclePlate;
+        var infractionCategory = parseInt(this.state.infractionCategory);
+        var dateInfraction = this.state.dateInfraction;
+        var dateInfractionFormated = dateInfraction.getMonth() + "/" + dateInfraction.getDay() + "/" + dateInfraction.getFullYear()
+        var infractionPoints = parseInt(this.state.infractionPoints);
+        var observations = this.state.observations;
+        var valueToPay = 123;
+        var statusOfInfraction = 1;//Pending
+        var infractorDriverAddress = this.state.infractorDriverAddress;
 
-        /*
-        function registerInfraction(string memory _vehiclePlate, uint _infractionCategory,
-                                string memory _dateInfraction, uint _infractionPoints,
-                                string memory _observations, uint _valueToPay,
-                                uint _statusOfInfraction, address _infractorDriverAddress
-        */
 
-        //register
-         //const registerInfraction = trafficApp.methods.registerInfraction("ABC-1234",1,"01/01/2019",5,"Estava a 110 na via de 80",1,0,0x49c5b42DeD7c979A0fc825A12ddba4529B846aA3).send();
+        this.setState({waitingInfractionRegister:true})
+        console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction,infractorDriverAddress)
+        
+        const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction,infractorDriverAddress).send({ from: this.props.account })
+        .on('transactionHash', function(hash){
+            console.log("hash", hash)
+        })
+        .on('confirmation', function(confirmationNumber, receipt){
+            window.alert("Infração Registrada com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
+            //console.log(receipt)
+            this.setState({waitingInfractionRegister:false })
+        })
+        
+        this.setState({waitingInfractionRegister:false })
+        console.log(registerInfraction)
+    }
+
+    async getInfo(){
+        const ticketsCount =  await this.props.contract.methods.ticketsCount().call()
+        
+        console.log("Autoridades Registradas driver page: ", ticketsCount)
     }
 
     componentDidMount(){
-        this.loadMetamaskInfo();
+
+        //this.registerDriver();
+        console.log("Contrato info", this.props.contract)
+        //this.getInfo()
+
     }
     
 
@@ -205,10 +196,10 @@ class InfractionRegisterForm extends React.Component {
                             value={this.state.infractionCategory}
                             >
                                 <MenuItem value="">Selecione</MenuItem>
-                                <MenuItem value="leve">Leve</MenuItem>
-                                <MenuItem value="media">Média</MenuItem>
-                                <MenuItem value="grave">Grave</MenuItem>
-                                <MenuItem value="gravissima">Gravíssima</MenuItem>
+                                <MenuItem value="1">Leve</MenuItem>
+                                <MenuItem value="2">Média</MenuItem>
+                                <MenuItem value="3">Grave</MenuItem>
+                                <MenuItem value="4">Gravíssima</MenuItem>
                             </TextField>
                         </Box>
 
@@ -229,7 +220,6 @@ class InfractionRegisterForm extends React.Component {
                                     onChange={(e)=>{this.handleDateInfraction(e)}}
                                     />
                                 </MuiPickersUtilsProvider>
-
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
@@ -280,7 +270,12 @@ class InfractionRegisterForm extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="center" paddingTop={3}>
-                            <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Infração</Button>
+                            
+                            {this.state.waitingInfractionRegister ? 
+                                (<div><CircularProgress></CircularProgress><br></br><Typography variant="body" color="textSecondary">Transação em andamento</Typography> </div>)
+                                    : 
+                                ( <Button variant="contained" onClick={(e) => { this.submitCreateSessionForm(e) }}>Registrar Infração</Button> ) 
+                            }
                         </Box>
                     </Grid>
                 </Grid>
