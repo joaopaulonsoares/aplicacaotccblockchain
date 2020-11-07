@@ -16,6 +16,8 @@ module.exports = Object.freeze({
         INFRACTION_REGISTER_PAGE_URL: '/infraction_register',
         DRIVER_REGISTER_PAGE_URL: '/driver_register',
         DRIVER_LIST_PAGE_URL: '/driver_list',
+        AUTHORITIE_REGISTER_PAGE_URL: '/authoritie_register',
+        AUTHORITIE_LIST_PAGE_URL: '/authoritie_list',
 
 
     //API'S BACKEND
