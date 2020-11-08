@@ -1,6 +1,5 @@
 import React, { Component, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import EstudioAcompanhePageContainer from './containers/EstudioAcompanhePageContainer';
 import LoginScreen from "./containers/LoginScreenContainer";
 import MenuDrawer from './containers/MenuDrawer'
 import LoginPage from './containers/LoginPage'
@@ -24,21 +23,25 @@ class PrivateRouteAuth extends Component{
           isAuthenticaded: false,
           isLoadingPage:"true"
         };
-        this.checkIfUserIsAuthenticated = this.checkIfUserIsAuthenticated.bind(this);
+        this.checkIfUserIsAuthoritie = this.checkIfUserIsAuthoritie.bind(this);
     }
 
-    async checkIfUserIsAuthenticated(callback){
+    async checkIfUserIsAuthoritie(callback){
         try{
-            const response = await axiosInstance.post(TOKEN_VERIFY_URL, {
-                token: localStorage.getItem('access_token')
-            });
+            var authorities = this.props.authorities;
+            var currentAccount = this.props.account;
+            var status = await authorities.filter(e => e.authoritieAddress === currentAccount).length > 0;
+        
 
-            if(response.status === 200){
+            if(status){
+                // It is an authoritie
                 this.setState({isAuthenticaded:true})
+                callback();
             }else{
                 this.setState({isAuthenticaded:false});
+                callback();
             }
-            callback()
+
         }catch(error){
             callback();
         }
@@ -48,7 +51,7 @@ class PrivateRouteAuth extends Component{
         this._isMounted = true;
         if(this._isMounted){
 
-            this.checkIfUserIsAuthenticated( () => {
+            this.checkIfUserIsAuthoritie( () => {
                 this.setState({isLoadingPage:false})
               });
         }
@@ -90,7 +93,7 @@ function AppRouter(props){
                 <LoginPage></LoginPage>
             </Route>
             {/*Authenticated routes */}
-            <PrivateRouteAuth>
+            <PrivateRouteAuth account={props.account} authorities={props.authorities}>
                 <MenuDrawer account={props.account}>
                     <Route exact path={DASHBOARD_BASE_URL}>
                         <InitialDashboard></InitialDashboard>

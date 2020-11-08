@@ -98,7 +98,7 @@ class App extends Component {
       <div className="App">
         {/*<StylesProvider generateClassName={generateClassName}>*/}
          <ThemeProvider theme={customTheme}>
-              <AppRouter account={this.state.account} contract={this.state.infractionContract} theme={customTheme}></AppRouter>
+              <AppRouter account={this.state.account} contract={this.state.infractionContract} authorities={this.state.authorities} theme={customTheme}></AppRouter>
         </ThemeProvider>
         {/*</StylesProvider>*/}
       </div>
