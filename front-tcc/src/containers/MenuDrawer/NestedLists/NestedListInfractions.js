@@ -15,8 +15,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import GavelIcon from '@material-ui/icons/Gavel';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import PostAddIcon from '@material-ui/icons/PostAdd';
+import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 
-import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL} from '../../../api_urls'
+import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,13 +66,23 @@ export default function NestedToolInfractions(props) {
 
           
         <ListItem button component={Link} to={INFRACTION_REGISTER_PAGE_URL} className={classes.nested}>
-        <ListItemIcon>
-            <Icon>
-            <PostAddIcon></PostAddIcon>
-            </Icon>
-        </ListItemIcon>
-        <ListItemText primary="Registrar Infração"/>
+          <ListItemIcon>
+              <Icon>
+              <PostAddIcon></PostAddIcon>
+              </Icon>
+          </ListItemIcon>
+          <ListItemText primary="Registrar Infração"/>
         </ListItem>
+
+        <ListItem button component={Link} to={INFRACTION_TRANSFERING_PAGE_URL} className={classes.nested}>
+          <ListItemIcon>
+              <Icon>
+              <TransferWithinAStationIcon></TransferWithinAStationIcon>
+              </Icon>
+          </ListItemIcon>
+          <ListItemText primary="Transferência de Infrações"/>
+        </ListItem>
+
         </List>
       </Collapse>
     </List>

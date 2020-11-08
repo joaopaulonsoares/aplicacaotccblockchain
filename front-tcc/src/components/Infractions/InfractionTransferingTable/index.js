@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+import axios from 'axios'
+import Modal from '@material-ui/core/Modal';
 
 import Box from '@material-ui/core/Box';
 
-class AuthoritieListTable extends Component {
+class InfractionTransferingTable extends Component {
 
   _isTableMounted=false;
   columns = [
-    { field: 'id', title: 'Id', tooltip:'Index do Usuário'},
-    { field: 'name', title: 'Nome', tooltip:'Nome do Usuário' },
-    { field: 'sigla', title: 'Sigla da Autoridade', tooltip:'Sigla da Autoridade de Trânsito' },
-    { field: 'authoritieAddress', title: 'Chave Da Autoridade', tooltip:'Chave única da Autoridade'},
+    { field: 'id', title: 'Id da Requisição', tooltip:'Id da requisição'},
+    { field: 'ticketId', title: 'Id do Ticket', tooltip:'Id da infração'},
+    { field: 'status', title: 'Status da requisição', tooltip:'Status da requisição( 0 -> Pending, 1 -> Accepted, 2 -> Rejected)'},
+    { field: 'currentOwnerAddress', title: 'Infrator Atual', tooltip:'Atual autor da infração' },
+    { field: 'requestedInfractorAddress', title: 'Transferir para', tooltip:'Motorista que se deseja transferir'},
   ] 
     
   constructor(props) {
@@ -24,8 +28,10 @@ class AuthoritieListTable extends Component {
       setRowsPerPage : 10,
       rows: [ ],
       totalCount:0,
-      currentPage:1
+      currentPage:1,
+      loadingTransaction: false
     };
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
 
@@ -39,45 +45,59 @@ class AuthoritieListTable extends Component {
       //});
     }
   }
+
+  async cancelInfraction(data){
+    if(window.confirm("Confirma que deseja cancelar infração " + data.id + " ?")){
+      this.setState({loadingTransaction:true})
+      const infractionCancel = await this.props.contract.methods.cancelInfraction(data.id).send({ from: this.props.account })
+
+      if(infractionCancel.status){
+        window.alert("Infracao Cancelada com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
+      }else{
+          window.alert("Erro ao cancelar Infracao. Tente novamente mais tarde" )
+      }
+      this.setState({loadingTransaction:false })
+      window.location.reload(false);
+    }
+  
+  }
+
+  handleModalClose(){
+    this.setState({loadingTransaction:false})
+  }
     
   render(){
-    const loading = this.state.isLoadingTable
     const tableRef = React.createRef();
 
-    if(loading){
+    if(this.state.loadingTransaction){
       return (<div align="center"> 
                 <Box width="auto" display="inline">
                   <CircularProgress></CircularProgress> 
                 </Box>
                 <Box>
-                  Buscando dados da página {this.state.currentPage[0]}
+                  Transação em Andamento
                 </Box>
               </div>
              )
-    }else{
+    }
       return (
           <Box width="auto" display="inline">
+
               <MaterialTable
                 columns={this.columns}
                 tableRef={tableRef}
                 data={this.props.rows}
-                actions={[
-                  {
-                    icon: 'refresh',
-                    tooltip: 'Refresh Data',
-                    isFreeAction: true,
-                    onClick: () => tableRef.current && tableRef.current.onQueryChange(),
-                  }
-                ]}
+
                 options={{
                   sorting: true,
                   exportButton: true,
                   exportAllData: true,
-                  exportFileName: "autoridades registradas",
+                  exportFileName: "infrações de trânsito",
                   pageSize:10,
                   pageSizeOptions:[5, 10, 20, 30, 40, 50, 100,1300],
                   emptyRowsWhenPaging:false,
-                  removable:true
+                  removable:true,
+                  actionsColumnIndex: -1
                 }}
                 localization={{
                   body: {
@@ -96,14 +116,15 @@ class AuthoritieListTable extends Component {
                     lastTooltip: 'Última página'
                   }
                 }}
-                title="Aurotidades Registradas"
+                title="Requisições para transferência Registradas"
                 
                 //onRowClick={(event, rowData, togglePanel) => togglePanel()}
               />
+
           </Box>
       )
-    }
+    
   }
 }
 
-export default (AuthoritieListTable);
+export default (InfractionTransferingTable);

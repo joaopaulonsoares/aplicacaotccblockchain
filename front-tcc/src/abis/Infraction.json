@@ -4,6 +4,45 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "_tranferTicketRequestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "acceptTransferTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelInfraction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "payInfraction",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "string",
           "name": "_name",
           "type": "string"
@@ -48,9 +87,123 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_vehiclePlate",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractionCategory",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_dateInfraction",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractionPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_observations",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_valueToPay",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_statusOfInfraction",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_infractorDriverAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractorDriverId",
+          "type": "uint256"
+        }
+      ],
+      "name": "registerInfraction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currentOwnerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_requestedInfractorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "registerTransferTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "ticketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "accountThatPayed",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "TicketPayedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "TransferTicketEvent",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -106,47 +259,12 @@
     {
       "inputs": [
         {
-          "internalType": "string",
-          "name": "_vehiclePlate",
-          "type": "string"
-        },
-        {
           "internalType": "uint256",
-          "name": "_infractionCategory",
+          "name": "_tranferTicketRequestId",
           "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_dateInfraction",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_infractionPoints",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_observations",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_valueToPay",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_statusOfInfraction",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_infractorDriverAddress",
-          "type": "address"
         }
       ],
-      "name": "registerInfraction",
+      "name": "rejectTransferTicketRequest",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -231,40 +349,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "authoritiesMap",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "sigla",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "authoritieAddress",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -358,109 +442,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "driversListAddress",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "numberOfPoints",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "driverAddress",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "driveTickets",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "vehiclePlate",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "infractionCategory",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "dateInfraction",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "infractionPoints",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "observations",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "valueToPay",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "statusOfInfraction",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "infractorDriverAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "authorityResponsableAdress",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "authoritieId",
           "type": "uint256"
@@ -482,30 +463,6 @@
           "internalType": "address",
           "name": "authoritieAddress",
           "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "driverAddress",
-          "type": "address"
-        }
-      ],
-      "name": "getDriverInformationByAddress",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "numberOfPoints",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -581,9 +538,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "string",
           "name": "statusOfInfraction",
-          "type": "uint256"
+          "type": "string"
         },
         {
           "internalType": "address",
@@ -677,9 +634,14 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "string",
           "name": "statusOfInfraction",
-          "type": "uint256"
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "payed",
+          "type": "bool"
         },
         {
           "internalType": "address",
@@ -687,7 +649,7 @@
           "type": "address"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "authorityResponsableAdress",
           "type": "address"
         }
@@ -698,6 +660,58 @@
     {
       "inputs": [],
       "name": "ticketsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tranferTicketsRequests",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "ticketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "status",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "currentOwnerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "requestedInfractorAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "transferTicketsCount",
       "outputs": [
         {
           "internalType": "uint256",
@@ -13392,8 +13406,8 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xfa81bb31e550c3a54f08eb0d91b66d0864b20826",
-      "transactionHash": "0xbfa1747da773c2689983acd41b6f386fc476e1a4c98e3cc201bf02d22c025296"
+      "address": "0x8D94eAB251b9FAE5f105f723cF8f9d094354d95b",
+      "transactionHash": "0x12dbb7020afdbce0b2e0b11e8a6d4d997c8f99365c5621c25de264c5ccd92cd6"
     }
   },
   "schemaVersion": "3.2.4",

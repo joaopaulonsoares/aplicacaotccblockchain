@@ -57,6 +57,7 @@ class InfractionRegisterForm extends React.Component {
             valueToPay:"",
             statusOfInfraction:"",
             infractorDriverAddress:"",
+            infractorDriverId:"",
             loggedAccount:"",
             waitingInfractionRegister:false
         };
@@ -68,7 +69,8 @@ class InfractionRegisterForm extends React.Component {
         this.handleValueToPay = this.handleValueToPay.bind(this);
         this.handleStatusOfInfraction = this.handleStatusOfInfraction.bind(this);
         this.handleInfractorDriverAddress = this.handleInfractorDriverAddress.bind(this);
-        this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
+        this.handleInfractorDriverId = this.handleInfractorDriverId.bind(this);
+        this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this); 
         this.registerInfraction = this.registerInfraction.bind(this);
     }
 
@@ -106,39 +108,45 @@ class InfractionRegisterForm extends React.Component {
         this.setState({infractorDriverAddress: e.target.value});
     };
 
+    handleInfractorDriverId = (e) => {
+        this.setState({infractorDriverId: e.target.value});
+    };
 
     submitCreateSessionForm = (event) => {
         event.preventDefault();
 
-        console.log("Botão click");
+        //console.log("Botão click");
         this.registerInfraction();
     };
 
     async registerInfraction(){
-        
+        //console.log("Driver id ", this.state.infractorDriverId)
         var vehiclePlate = this.state.vehiclePlate;
         var infractionCategory = parseInt(this.state.infractionCategory);
         var dateInfraction = this.state.dateInfraction;
         var dateInfractionFormated = dateInfraction.getMonth() + "/" + dateInfraction.getDay() + "/" + dateInfraction.getFullYear()
         var infractionPoints = parseInt(this.state.infractionPoints);
         var observations = this.state.observations;
-        var valueToPay = 123;
-        var statusOfInfraction = 1;//Pending
+        var valueToPay = 1;
+        var statusOfInfraction = "Active";
         var infractorDriverAddress = this.state.infractorDriverAddress;
+        var infractorDriverId =  this.state.infractorDriverId;
 
 
         this.setState({waitingInfractionRegister:true})
-        console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction,infractorDriverAddress)
+        console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId)
         
-        const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction,infractorDriverAddress).send({ from: this.props.account })
+        const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId).send({ from: this.props.account })
         .on('transactionHash', function(hash){
             console.log("hash", hash)
         })
-        .on('confirmation', function(confirmationNumber, receipt){
-            window.alert("Infração Registrada com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
-            //console.log(receipt)
-            this.setState({waitingInfractionRegister:false })
-        })
+
+        if(registerInfraction.status){
+            window.alert("Infracao Registrada com sucesso no bloco " + registerInfraction.blockNumber + " na transação " + registerInfraction.transactionHash )
+        }else{
+            window.alert("Erro ao registrar Infracao. Tente novamente mais tarde" )
+        }
+
         
         this.setState({waitingInfractionRegister:false })
         console.log(registerInfraction)
@@ -230,7 +238,6 @@ class InfractionRegisterForm extends React.Component {
                             fullWidth={true}
                             id="infractionPoints"
                             variant="outlined"
-            
                             color="primary"
                             type="number"
                             onChange={(e)=>{this.handleInfractionPoints(e)}}
@@ -254,7 +261,7 @@ class InfractionRegisterForm extends React.Component {
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={10}>
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Chave(address) do infrator" 
@@ -265,6 +272,21 @@ class InfractionRegisterForm extends React.Component {
                             fullWidth={true}
                             onChange={(e)=>{this.handleInfractorDriverAddress(e)}}
                             value={this.state.infractorDriverAddress}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Box display="block" justifyContent="flex-start" >
+                            <TextField
+                            label="Id do infrator" 
+                            className={classes.inputBorderColor}
+                            id="driverId"
+                            variant="outlined"
+                            color="primary"
+                            type="number"
+                            fullWidth={true}
+                            onChange={(e)=>{this.handleInfractorDriverId(e)}}
+                            value={this.state.infractorDriverId}
                             />
                         </Box>
                     </Grid>

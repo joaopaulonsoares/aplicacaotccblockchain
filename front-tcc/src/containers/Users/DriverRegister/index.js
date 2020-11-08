@@ -83,13 +83,17 @@ class DriverRegisterPage extends Component {
         .on('transactionHash', function(hash){
             console.log("hash", hash)
         })
-        .on('confirmation', function(confirmationNumber, receipt){
+        /*.on('confirmation', function(confirmationNumber, receipt){
             window.alert("Motorista Registrado com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
-            //console.log(receipt)
-            this.setState({waitingRegisterDriver:false })
-        })
+        })*/
         
-        this.setState({waitingRegisterDriver:false })
+        if(registerDriver.status){
+            window.alert("Motorista Registrado com sucesso no bloco " + registerDriver.blockNumber + " na transação " + registerDriver.transactionHash )
+        }else{
+            window.alert("Erro ao registrar Motorista. Tente novamente mais tarde" )
+        }
+
+        this.setState({waitingRegisterDriver:false,  driverName:"", driverAddress:"" })
         console.log(registerDriver)
     }
 
@@ -138,11 +142,11 @@ class DriverRegisterPage extends Component {
                             variant="outlined"
                             color="primary"
                             onChange={(e)=>{this.handleName(e)}}
-                            value={this.state.observations}
+                            value={this.state.driverName}
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={10}>
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Chave do motorista" 
@@ -152,7 +156,7 @@ class DriverRegisterPage extends Component {
                             color="primary"
                             fullWidth={true}
                             onChange={(e)=>{this.handleDriverAddress(e)}}
-                            value={this.state.infractorDriverAddress}
+                            value={this.state.driverAddress}
                             />
                         </Box>
                     </Grid>

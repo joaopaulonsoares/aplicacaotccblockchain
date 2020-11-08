@@ -14,10 +14,12 @@ module.exports = Object.freeze({
         DASHBOARD_BASE_URL: '/dashboard/',
         INFRACTION_LIST_PAGE_URL: '/infraction_list',
         INFRACTION_REGISTER_PAGE_URL: '/infraction_register',
+        INFRACTION_TRANSFERING_PAGE_URL: '/infraction_transfering',
         DRIVER_REGISTER_PAGE_URL: '/driver_register',
         DRIVER_LIST_PAGE_URL: '/driver_list',
         AUTHORITIE_REGISTER_PAGE_URL: '/authoritie_register',
         AUTHORITIE_LIST_PAGE_URL: '/authoritie_list',
+        
 
 
     //API'S BACKEND

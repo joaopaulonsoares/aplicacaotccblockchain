@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
 import axios from 'axios'
+import Modal from '@material-ui/core/Modal';
 
 import Box from '@material-ui/core/Box';
 
@@ -9,6 +11,7 @@ class InfractionListTable extends Component {
 
   _isTableMounted=false;
   columns = [
+    { field: 'id', title: 'Id', tooltip:'Id da infração'},
     { field: 'vehiclePlate', title: 'Placa', tooltip:'Placa do veículo'},
     { field: 'infractionCategory', title: 'Categoria', tooltip:'Categoria da infração(leve, média...)' },
     { field: 'dateInfraction', title: 'Data', tooltip:'Data da infração' },
@@ -30,8 +33,10 @@ class InfractionListTable extends Component {
       setRowsPerPage : 10,
       rows: [ ],
       totalCount:0,
-      currentPage:1
+      currentPage:1,
+      loadingTransaction: false
     };
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
 
@@ -45,35 +50,57 @@ class InfractionListTable extends Component {
       //});
     }
   }
+
+  async cancelInfraction(data){
+    if(window.confirm("Confirma que deseja cancelar infração " + data.id + " ?")){
+      this.setState({loadingTransaction:true})
+      const infractionCancel = await this.props.contract.methods.cancelInfraction(data.id).send({ from: this.props.account })
+
+      if(infractionCancel.status){
+        window.alert("Infracao Cancelada com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
+      }else{
+          window.alert("Erro ao cancelar Infracao. Tente novamente mais tarde" )
+      }
+      this.setState({loadingTransaction:false })
+      window.location.reload(false);
+    }
+  
+  }
+
+  handleModalClose(){
+    this.setState({loadingTransaction:false})
+  }
     
   render(){
-    const loading = this.state.isLoadingTable
     const tableRef = React.createRef();
 
-    if(loading){
+    if(this.state.loadingTransaction){
       return (<div align="center"> 
                 <Box width="auto" display="inline">
                   <CircularProgress></CircularProgress> 
                 </Box>
                 <Box>
-                  Buscando dados da página {this.state.currentPage[0]}
+                  Transação em Andamento
                 </Box>
               </div>
              )
-    }else{
+    }
       return (
           <Box width="auto" display="inline">
+
               <MaterialTable
                 columns={this.columns}
                 tableRef={tableRef}
                 data={this.props.rows}
                 actions={[
-                  {
-                    icon: 'refresh',
-                    tooltip: 'Refresh Data',
-                    isFreeAction: true,
-                    onClick: () => tableRef.current && tableRef.current.onQueryChange(),
-                  }
+                  rowData => ({
+                    icon: 'delete',
+                    tooltip: 'Cancelar Infração',
+                    onClick: (event, rowData) => (
+                      this.cancelInfraction(rowData)
+                   ),
+                    disabled: rowData.statusOfInfraction === "Canceled"
+                  })
                 ]}
                 options={{
                   sorting: true,
@@ -83,7 +110,8 @@ class InfractionListTable extends Component {
                   pageSize:10,
                   pageSizeOptions:[5, 10, 20, 30, 40, 50, 100,1300],
                   emptyRowsWhenPaging:false,
-                  removable:true
+                  removable:true,
+                  actionsColumnIndex: -1
                 }}
                 localization={{
                   body: {
@@ -106,9 +134,10 @@ class InfractionListTable extends Component {
                 
                 //onRowClick={(event, rowData, togglePanel) => togglePanel()}
               />
+
           </Box>
       )
-    }
+    
   }
 }
 

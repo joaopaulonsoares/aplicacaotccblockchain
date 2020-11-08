@@ -96,7 +96,7 @@ class InfractionList extends Component {
     return (
       <React.Fragment>
           <Box>
-            <InfractionListTable rows={this.state.infractionsList}></InfractionListTable>
+            <InfractionListTable rows={this.state.infractionsList} contract={this.props.contract} account ={this.props.account}></InfractionListTable>
           </Box>
         </React.Fragment>
     );
