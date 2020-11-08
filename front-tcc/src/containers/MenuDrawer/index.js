@@ -12,22 +12,14 @@ import Box from '@material-ui/core/Box';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import { Link } from "react-router-dom";
 import NestedToolListUser from './NestedLists/NestedListUsers'
 import NestedToolInfractions from './NestedLists/NestedListInfractions'
 
-import Web3 from 'web3'
-import {APP_ABI, APP_ADDRESS} from '../../config.js'
 import {useStyles} from './const_info'
 
 export default function MenuDrawer(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [account, setAccount] = React.useState('');
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -36,8 +28,6 @@ export default function MenuDrawer(props) {
     setOpen(false);
   }; 
   
-
-
 
   return (
     <div className={classes.root}>
