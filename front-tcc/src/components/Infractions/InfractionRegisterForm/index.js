@@ -75,7 +75,6 @@ class InfractionRegisterForm extends React.Component {
     };
 
     handleInfractionCategory= (e) => {
-        console.log(e.target.value)
         this.setState({infractionCategory: e.target.value});
     };
 
@@ -110,8 +109,6 @@ class InfractionRegisterForm extends React.Component {
 
     submitCreateSessionForm = (event) => {
         event.preventDefault();
-
-        //console.log("Botão click");
         this.registerInfraction();
     };
 
@@ -130,7 +127,7 @@ class InfractionRegisterForm extends React.Component {
 
 
         this.setState({waitingInfractionRegister:true})
-        console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId)
+        //console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId)
         
         const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId).send({ from: this.props.account })
         .on('transactionHash', function(hash){
@@ -145,19 +142,13 @@ class InfractionRegisterForm extends React.Component {
 
         
         this.setState({waitingInfractionRegister:false })
-        console.log(registerInfraction)
-    }
-
-    async getInfo(){
-        const ticketsCount =  await this.props.contract.methods.ticketsCount().call()
-        
-        console.log("Autoridades Registradas driver page: ", ticketsCount)
+        //console.log(registerInfraction)
     }
 
     componentDidMount(){
 
         //this.registerDriver();
-        console.log("Contrato info", this.props.contract)
+        //console.log("Contrato info", this.props.contract)
         //this.getInfo()
 
     }

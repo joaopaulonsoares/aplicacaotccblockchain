@@ -26,7 +26,7 @@ contract InfractionTcc{
         bool payed;
 
         address infractorDriverAddress;
-        address payable authorityResponsableAdress; // Authoritie that registered the infraction(will receive the payement of the debt)
+        address payable authorityResponsableAdress; // Authoritie that registered the infraction(and will receive the payement of the debt)
     }
 
     // Model a Driver
@@ -72,7 +72,6 @@ contract InfractionTcc{
     mapping(uint => CancelTickeRequest) public cancelTicketsRequests;
 
 
-
     // Create Lists to access vlues
     uint[] public ticketList;
     address[] public driversList;
@@ -86,8 +85,7 @@ contract InfractionTcc{
 
 
     // Events
-    event registeredInfraction (address indexed authoritieAddress, address indexed driverAddress, string message
-    );
+    event registeredInfraction (address indexed authoritieAddress, address indexed driverAddress, string message);
 
     event registeredDriverEvent (address authoritieAddress);
 
@@ -155,8 +153,7 @@ contract InfractionTcc{
     }
     
         
-    function registerTransferTicketRequest(uint _ticketId, 
-                                           address _currentOwnerAddress, 
+    function registerTransferTicketRequest(uint _ticketId,
                                            address _requestedInfractorAddress )public{
          // Get Ticket INFORMATION
         TraficTicket memory _ticket = tickets[_ticketId];
@@ -329,7 +326,7 @@ contract InfractionTcc{
         _cancelTicketRequest.status = 2;
         cancelTicketsRequests[_cancelTicketRequestId] = _cancelTicketRequest;
 
-        CancelTicketEvent(_cancelTicketRequestId, _cancelTicketRequest.ticketId, "Pedido de cancelamento rejeitado!");
+        CancelTicketEvent( "Pedido de cancelamento rejeitado!");
         
     }
     
