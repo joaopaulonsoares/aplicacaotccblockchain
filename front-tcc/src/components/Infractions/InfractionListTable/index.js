@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
-import axios from 'axios'
-import Modal from '@material-ui/core/Modal';
 
 import Box from '@material-ui/core/Box';
 

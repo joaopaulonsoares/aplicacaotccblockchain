@@ -5,17 +5,13 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import axiosInstance from './../../auth/axiosApi.js'
-import {TOKEN_OBTAIN_URL, ESTUDIO_PAGE_URL, DASHBOARD_PAGE_URL, DASHBOARD_BASE_URL} from './../../api_urls';
+import {TOKEN_OBTAIN_URL, DASHBOARD_BASE_URL} from './../../api_urls';
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 

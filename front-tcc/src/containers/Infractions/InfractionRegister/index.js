@@ -1,17 +1,7 @@
 
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import MuiAlert from "@material-ui/lab/Alert";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import CloseIcon from "@material-ui/icons/Close";
 import InfractionRegisterForm from '../../../components/Infractions/InfractionRegisterForm/index.js'
 
 const useStyles = (theme) => ({

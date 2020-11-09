@@ -9,15 +9,13 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import GavelIcon from '@material-ui/icons/Gavel';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
+import ClearIcon from '@material-ui/icons/Clear';
 
-import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL} from '../../../api_urls'
+import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL, INFRACTION_CANCEL_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,6 +79,15 @@ export default function NestedToolInfractions(props) {
               </Icon>
           </ListItemIcon>
           <ListItemText primary="Transferência de Infrações"/>
+        </ListItem>
+
+        <ListItem button component={Link} to={INFRACTION_CANCEL_PAGE_URL} className={classes.nested}>
+          <ListItemIcon>
+              <Icon>
+              <ClearIcon></ClearIcon>
+              </Icon>
+          </ListItemIcon>
+          <ListItemText primary="Cancelamento de Infrações"/>
         </ListItem>
 
         </List>

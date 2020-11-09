@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';

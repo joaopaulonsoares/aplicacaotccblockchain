@@ -10,6 +10,7 @@ contract InfractionTcc{
     uint public driversCount;
     uint public authoritiesCount;
     uint public transferTicketsCount;
+    uint public cancelTicketsRequestCount;
 
 
     //Model a trafic ticket
@@ -51,6 +52,15 @@ contract InfractionTcc{
         address currentOwnerAddress;
         address requestedInfractorAddress;
     }
+    
+    struct CancelTickeRequest{
+        uint id;
+        uint ticketId;
+        uint status; // 0 -> Pending, 1 -> Accepted, 2 -> Rejected
+        string explanation;
+        address driverAddress;
+        address authorityResponsableAdress;
+    }
 
 
     // Map Tickets
@@ -59,6 +69,7 @@ contract InfractionTcc{
     mapping (address => Drivers) driversListAddress; // Just to get driver Id easily 
     mapping(uint => Authorities) public authorities; // Para simular o banco auxiliar de autoridades
     mapping(uint => TransferTicket) public tranferTicketsRequests;
+    mapping(uint => CancelTickeRequest) public cancelTicketsRequests;
 
 
 
@@ -75,60 +86,24 @@ contract InfractionTcc{
 
 
     // Events
-    event registeredInfraction (
-        address indexed authoritieAddress,
-        address indexed driverAddress,
-        string message
+    event registeredInfraction (address indexed authoritieAddress, address indexed driverAddress, string message
     );
 
-    event registeredDriverEvent (
-        address authoritieAddress
-    );
+    event registeredDriverEvent (address authoritieAddress);
 
-    event registeredAuthoritieEvent (
-        address authoritieAddress
-    );
+    event registeredAuthoritieEvent (address authoritieAddress);
     
-    event TicketPayedEvent (
-        uint ticketId,
-        address accountThatPayed,
-        string message
-    );
+    event TicketPayedEvent (uint ticketId, address accountThatPayed, string message);
     
-    event TransferTicketEvent(
-        string message
-    );
+    event TransferTicketEvent(string message);
     
-
+    event CancelTicketEvent(string message);
+    
 
     //  ============================================================== CONSTRUCTOR ==============================================================
     //  Adding Some initial informations to the Blockchain
 
     constructor(){
-        /*
-            AUTHORITIES GANACHE ACCOUNTS
-            - INDEX 0 -> 0x0b3C91ffcF7e0f01633Ed11C6d3667272aB0B4a7
-            - INDEX 1 -> 0x131939c0114374A718Be8cA9D62C92CD64890fe3
-        */
-        //Register some Authorities
-        //registerAuthoritie("Departamento Nacional de Transito","DNIT",0x4Ec72B1Bd5b4f6c6aECF9630a0e6F0479c0b2477);
-        //registerAuthoritie("Departamento Estadual de Transito do Distrito Federal","DETRAN-DF",0x7Fe8C20672FA2147d0db1fAa8C49fBEbA00f0c23);
-
-        /*
-                        DRIVERS GANACHE ACCOUNTS
-            - INDEX 2 -> 0x49c5b42DeD7c979A0fc825A12ddba4529B846aA3
-            - INDEX 3 -> 0xF879DEA577453A50b7bE8a4deA0928c118C0A574
-            - INDEX 4 -> 0x310c0a6bf27bB70acAd16767F42F8c9dA79D7e61
-        */
-        // Register some drivers
-        //registerDriver("Joao",0,0x49c5b42DeD7c979A0fc825A12ddba4529B846aA3);
-        //registerDriver("Paulo",0,0xF879DEA577453A50b7bE8a4deA0928c118C0A574);
-        //registerDriver("Nunes",0,0x310c0a6bf27bB70acAd16767F42F8c9dA79D7e61);
-
-        // Registering Some Tickets
-        //registerInfraction("ABC-1234",1,"01/01/2019",5,"Estava a 110 na via de 80",1,0,0x49c5b42DeD7c979A0fc825A12ddba4529B846aA3);
-        //registerInfraction("DEF-5678",2,"02/01/2019",3,"Estava a 90 na via de 50",2,1,0xF879DEA577453A50b7bE8a4deA0928c118C0A574);
-        //registerInfraction("GHI-9910",2,"03/01/2019",3,"Estava a 90 na via de 50",2,1,0x310c0a6bf27bB70acAd16767F42F8c9dA79D7e61);
 
     }
 
@@ -179,12 +154,10 @@ contract InfractionTcc{
         ticketsCount++;
     }
     
-
         
     function registerTransferTicketRequest(uint _ticketId, 
                                            address _currentOwnerAddress, 
-                                           address _requestedInfractorAddress )
-    public{
+                                           address _requestedInfractorAddress )public{
          // Get Ticket INFORMATION
         TraficTicket memory _ticket = tickets[_ticketId];
         
@@ -199,6 +172,19 @@ contract InfractionTcc{
                                                                       
     }
     
+    function registerCancelTicketRequest(uint _ticketId, string memory _explanation) public{
+         // Get Ticket INFORMATION
+        TraficTicket memory _ticket = tickets[_ticketId];
+        
+        // Checks if is the current owner of infraction that is requesting to cancel
+        require(_ticket.infractorDriverAddress == msg.sender);
+        
+        cancelTicketsRequests[cancelTicketsRequestCount] = CancelTickeRequest(cancelTicketsRequestCount, _ticketId, 0, _explanation, msg.sender, _ticket.authorityResponsableAdress);
+        cancelTicketsRequestCount++;
+        
+        emit CancelTicketEvent("Requisicao para cancelamento de infracao realizada com sucesso!");
+                                                                      
+    }
      
     //  ============================================================== GET INFORMATION FUNCTIONS ==============================================================
 
@@ -219,28 +205,14 @@ contract InfractionTcc{
     }
 
 
-
-  /*  function getDriverInformationByAddress(address driverAddress) public view returns (string memory name,uint numberOfPoints){
-        name = driversListAddress[driverAddress].name;
-        numberOfPoints = driversListAddress[driverAddress].numberOfPoints;
-
-    }*/
-
-
-    function getDriverInformationById(uint driverId) public view returns (string memory name,uint numberOfPoints, address driverAddress){
+    function getDriverInformationById(uint driverId) public view returns (string memory name,uint numberOfPoints, address driverAddress, uint id){
+        id = drivers[driverId].id;
         name = drivers[driverId].name;
         driverAddress = drivers[driverId].driverAddress;
         numberOfPoints = drivers[driverId].numberOfPoints;
     }
 
-    /*function getAuthoritieInformation(address authoritieAddress) public view returns (string memory name, string memory sigla){
-        name = authorities[authoritieAddress].name;
-        sigla = authorities[authoritieAddress].sigla;
-
-    }*/
-
-    function getAuthoritieInformationById(uint authoritieId) public view returns (string memory name, string memory sigla,
-    address authoritieAddress){
+    function getAuthoritieInformationById(uint authoritieId) public view returns (string memory name, string memory sigla, address authoritieAddress){
         name = authorities[authoritieId].name;
         sigla = authorities[authoritieId].sigla;
         authoritieAddress = authorities[authoritieId].authoritieAddress;
@@ -252,8 +224,7 @@ contract InfractionTcc{
     
     // ============================================== TRANSFER INFRACTION FUNCTIONS ==================================================
     
-    function acceptTransferTicketRequest(uint _tranferTicketRequestId)
-    public{
+    function acceptTransferTicketRequest(uint _tranferTicketRequestId) public{
         
         
          // Get Transfer request informations
@@ -297,8 +268,7 @@ contract InfractionTcc{
                                                                       
     }
     
-    function rejectTransferTicketRequest(uint _tranferTicketRequestId)
-    public{
+    function rejectTransferTicketRequest(uint _tranferTicketRequestId) public{
          // Get Transfer request informations
         TransferTicket memory _transferTicketRequest = tranferTicketsRequests[_tranferTicketRequestId];
         
@@ -345,8 +315,43 @@ contract InfractionTcc{
     }
     
     // ======================================================== CANCEL INFRACTION ====================================================
+    
+    function rejectCancelTicketRequest(uint _cancelTicketRequestId) public{
+        CancelTickeRequest memory _cancelTicketRequest = cancelTicketsRequests[_cancelTicketRequestId];
+        
+         // Checks if is the status is Pending 
+        require(_cancelTicketRequest.status == 0);
+        
+        // Checks if user accepting is the authority responsable of infraction
+        require(_cancelTicketRequest.authorityResponsableAdress == msg.sender);
+        
+        // Update the request status
+        _cancelTicketRequest.status = 2;
+        cancelTicketsRequests[_cancelTicketRequestId] = _cancelTicketRequest;
 
-    function cancelInfraction(uint _ticketId) public {
+        CancelTicketEvent(_cancelTicketRequestId, _cancelTicketRequest.ticketId, "Pedido de cancelamento rejeitado!");
+        
+    }
+    
+    function acceptCancelTicketRequest(uint _cancelTicketRequestId) public{
+        CancelTickeRequest memory _cancelTicketRequest = cancelTicketsRequests[_cancelTicketRequestId];
+        
+         // Checks if is the status is Pending 
+        require(_cancelTicketRequest.status == 0);
+        
+        // Checks if user accepting is the authority responsable of infraction
+        require(_cancelTicketRequest.authorityResponsableAdress == msg.sender);
+        
+        // Update the request status
+        _cancelTicketRequest.status = 1;
+        cancelTicketsRequests[_cancelTicketRequestId] = _cancelTicketRequest;
+        
+        // Call the function to cancel the infraction
+        cancelInfraction(_cancelTicketRequest.ticketId);
+        
+    }
+    
+    function cancelInfraction(uint _ticketId) private {
         // Get Ticket INFORMATION
         TraficTicket memory _ticket = tickets[_ticketId];
         

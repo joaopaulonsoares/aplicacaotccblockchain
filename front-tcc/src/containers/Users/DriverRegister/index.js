@@ -1,20 +1,11 @@
 
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import MuiAlert from "@material-ui/lab/Alert";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import CloseIcon from "@material-ui/icons/Close";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
-import DriverRegisterForm from '../../../components/Users/DriverRegisterForm/index'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = (theme) => ({
@@ -146,7 +137,7 @@ class DriverRegisterPage extends Component {
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={12}>
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Chave do motorista" 

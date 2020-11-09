@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import InfractionListTable from '../../../components/Infractions/InfractionListTable/index.js'
+import InfractionCancelTable from '../../../components/Infractions/InfractionCancelTable/index.js'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = (theme) => ({
@@ -32,7 +32,7 @@ const useStyles = (theme) => ({
 });
 
 
-class InfractionList extends Component {
+class InfractionCancel extends Component {
   _isMounted = false;
 
   constructor(props) {
@@ -45,25 +45,25 @@ class InfractionList extends Component {
     };
   }
 
-  async getInfractionListData(){
-    const infractionsCount =  await this.props.contract.methods.ticketsCount().call()
-    console.log("Infrações Registradas page: ", infractionsCount)
+  async getInfractionCancelListData(){
+    const infractionsCount =  await this.props.contract.methods.cancelTicketsRequestCount().call()
+    console.log("Requisições de cancelamento: ", infractionsCount)
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
-      const authoritie = await this.props.contract.methods.tickets(i).call()
+      const infractionCancelList = await this.props.contract.methods.cancelTicketsRequests(i).call()
       this.setState({
-        infractionsList: [...this.state.infractionsList, authoritie]
+        infractionsList: [...this.state.infractionsList, infractionCancelList]
       })
     }
-    console.log("Lista de infrações")
+    console.log("Lista de Requisições")
     console.log(this.state.infractionsList)
     this.setState({isFetchingInfo:false});
   }
 
   componentDidMount() {
     this._isMounted = true;
-    this.getInfractionListData()
+    this.getInfractionCancelListData()
     
     //this.setState({ isLoadingPage: false });
   }
@@ -84,11 +84,11 @@ class InfractionList extends Component {
     return (
       <React.Fragment>
           <Box>
-            <InfractionListTable rows={this.state.infractionsList} contract={this.props.contract} account ={this.props.account}></InfractionListTable>
+            <InfractionCancelTable rows={this.state.infractionsList} contract={this.props.contract} account={this.props.account}></InfractionCancelTable>
           </Box>
         </React.Fragment>
     );
   }
 }
 
-export default withStyles(useStyles)(InfractionList);
+export default withStyles(useStyles)(InfractionCancel);

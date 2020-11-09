@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from 'axios'
 
 import Box from '@material-ui/core/Box';
 

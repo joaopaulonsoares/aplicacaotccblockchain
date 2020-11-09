@@ -1,6 +1,5 @@
 import React, { Component, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import LoginScreen from "./containers/LoginScreenContainer";
 import MenuDrawer from './containers/MenuDrawer'
 import LoginPage from './containers/LoginPage'
 import InitialDashboard from './containers/InitialDashboard'
@@ -11,9 +10,10 @@ import DriverList from './containers/Users/DriverList/index'
 import AuthoritieRegisterPage from './containers/Users/AuthoritieRegister/index'
 import InfractionTranfer from './containers/Infractions/InfractionTransfer/index'
 import AuthoritieList from './containers/Users/AuthoritieList/index'
-import axiosInstance from './auth/axiosApi';
-import {TOKEN_VERIFY_URL, INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL,INFRACTION_REGISTER_PAGE_URL,
-    DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL,INFRACTION_TRANSFERING_PAGE_URL} from './api_urls'
+import InfractionCancel from './containers/Infractions/InfractionCancel/index'
+import { INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL,INFRACTION_REGISTER_PAGE_URL,
+    DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL,INFRACTION_TRANSFERING_PAGE_URL,
+    INFRACTION_CANCEL_PAGE_URL} from './api_urls'
 
 
 class PrivateRouteAuth extends Component{
@@ -118,6 +118,9 @@ function AppRouter(props){
                     </Route>
                     <Route exact path={INFRACTION_TRANSFERING_PAGE_URL}>
                         <InfractionTranfer contract={props.contract} account={props.account}></InfractionTranfer>
+                    </Route>
+                    <Route exact path={INFRACTION_CANCEL_PAGE_URL}>
+                        <InfractionCancel contract={props.contract} account={props.account}></InfractionCancel>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>
