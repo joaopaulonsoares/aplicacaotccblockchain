@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="145px" height="88px" viewBox="0 0 145 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>logo written</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo-written" transform="translate(2.000000, 0.000000)" stroke="#2DA965">
+            <path d="M100.148,50.8173 L115.294,3.5 L139.024,3.5 L113.104,84.5 L84.953,84.5 L71.7149,40.6862 L71.7149,40.6861 L60.4771,3.5 L82.9659,3.5 L97.283,50.7946 C97.474,51.4231 98.051,51.8548 98.707,51.86 C99.364,51.8652 99.947,51.4427 100.148,50.8173 Z" id="Shape" stroke-width="3" stroke-linejoin="round"></path>
+            <polygon id="Shape" stroke-width="3" fill="#2DA965" fill-rule="nonzero" points="0.814 3.5 26.8099 3.5 41.1249 50.1996 42.5191 54.748 43.986 50.2225 59.1297 3.5 81.9593 3.5 68.8645 40.621 68.8567 40.643 68.8496 40.6652 54.9022 84.5 26.734 84.5"></polygon>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(98.759000, 50.000000) rotate(-180.000000) translate(-98.759000, -50.000000) " cx="98.759" cy="50" r="4.5"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(119.759000, 30.000000) rotate(-180.000000) translate(-119.759000, -30.000000) " cx="119.759" cy="30" r="3.5"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(92.759000, 70.000000) rotate(-180.000000) translate(-92.759000, -70.000000) " cx="92.759" cy="70" r="4.5"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(109.759000, 67.000000) rotate(-180.000000) translate(-109.759000, -67.000000) " cx="109.759" cy="67" r="3.5"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(85.259000, 84.500000) rotate(-180.000000) translate(-85.259000, -84.500000) " cx="85.259" cy="84.5" r="3"></circle>
+            <path d="M113.259,81.5 C111.602,81.5 110.259,82.843 110.259,84.5 C110.259,86.157 111.602,87.5 113.259,87.5 C114.916,87.5 116.259,86.157 116.259,84.5 C116.259,82.843 114.916,81.5 113.259,81.5 Z" id="Shape" fill="#2DA965" fill-rule="nonzero"></path>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(139.259000, 3.500000) rotate(-180.000000) translate(-139.259000, -3.500000) " cx="139.259" cy="3.5" r="3"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(115.259000, 3.500000) rotate(-180.000000) translate(-115.259000, -3.500000) " cx="115.259" cy="3.5" r="3"></circle>
+            <circle id="Oval" fill="#2DA965" fill-rule="nonzero" transform="translate(82.759000, 4.000000) rotate(-180.000000) translate(-82.759000, -4.000000) " cx="82.759" cy="4" r="3.5"></circle>
+            <path d="M70.259,35.5 C68.0499,35.5 66.259,37.2909 66.259,39.5 C66.259,41.7091 68.0499,43.5 70.259,43.5 C72.4682,43.5 74.259,41.7091 74.259,39.5 C74.259,37.2909 72.4682,35.5 70.259,35.5 Z" id="Shape" fill="#2DA965" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>
