@@ -102,7 +102,20 @@ contract InfractionTcc{
     //  Adding Some initial informations to the Blockchain
 
     constructor(){
-
+        // Adding Initial Data
+        
+        // Adding some Authortiies
+        registerAuthoritie("Joao Paulo","JPNS", 0x2af609914ac3996113e52E133d78329A3c90c3CB );
+        registerAuthoritie("Autoridade Um","AutUm", 0x16B746E98118020E4a23d23F00db97c757ea19Ca );
+        
+        
+        // Adding some drivers
+        registerDriver("Jaqueline", 0, 0xd4f64F2c38c5712F0082787E17BaB4192Bc7373F);
+        registerDriver("Irineu", 0, 0x89044E6D53B2Ff837f0FA9584e112139E9E35861);
+        registerDriver("Luciene", 0,0xedbCDDb7DE91A24783Ba2FFf5420f73F7A7e439F);
+        registerDriver("Mariana", 0, 0x50A1Fc5774B42132B2101Eb7B3b7eeBA9df8eA83);
+        
+        
     }
 
     //  ============================================================== REGISTER FUNCTIONS ==============================================================
