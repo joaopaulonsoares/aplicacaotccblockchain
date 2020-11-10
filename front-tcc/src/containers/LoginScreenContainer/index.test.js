@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, getByPlaceholderText } from '@testing-library/react';
 import { mount, shallow } from 'enzyme';
 import LoginScreen from '../LoginScreenContainer';
-import axiosInstance from './../../auth/axiosApi'
 import moxios from 'moxios'
 import {responseData} from './auxTestResponse'
 

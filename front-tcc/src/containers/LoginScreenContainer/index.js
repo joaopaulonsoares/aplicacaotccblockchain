@@ -4,7 +4,6 @@ import {Redirect } from "react-router-dom";
 import { Grid, TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import axiosInstance from './../../auth/axiosApi.js'
 import {TOKEN_OBTAIN_URL, ESTUDIO_PAGE_URL} from './../../api_urls';
 
 import EstudioAcompanheIcon from './../../assets/estudio_acompanhe_logo.svg';
@@ -100,7 +99,7 @@ class LoginScreen extends React.Component {
             password: this.state.password
         }).then(
             result => {
-              console.log(result)
+              //console.log(result)
                 axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
                 localStorage.setItem('access_token', result.data.access);
                 localStorage.setItem('refresh_token', result.data.refresh);

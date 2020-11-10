@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import {
   withStyles
 } from '@material-ui/core/styles';
-import Web3 from 'web3'
+//import Web3 from 'web3'
 
 //https://www.youtube.com/watch?v=LzdMosLzj80
 const useStyles = theme => ({
@@ -53,19 +53,7 @@ class InitialDashboard extends Component {
 
 
   async componentDidMount() {
-    try{
-      let web3 ;
-      if(window.ethereum){
-        web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
-       console.log(web3)
-        //can use web3 with metamask
-      }else if(window.web3){
-        web3 = new Web3(window.web3.currentProvider)
-      }
-    }catch(e){
-      //teste
-    }
+
   }
 
   componentWillUnmount() {

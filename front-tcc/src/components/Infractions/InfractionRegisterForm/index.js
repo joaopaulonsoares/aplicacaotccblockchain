@@ -15,8 +15,6 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ptBrLocale from "date-fns/locale/pt-BR";
 
-//import axiosInstance from '../../../auth/axiosApi.js'
-//import {API_SESSIONS_URL} from '../../../api_urls'
 
 
 const useStyles = makeStyles({
@@ -131,7 +129,7 @@ class InfractionRegisterForm extends React.Component {
         
         const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId).send({ from: this.props.account })
         .on('transactionHash', function(hash){
-            console.log("hash", hash)
+            //console.log("hash", hash)
         })
 
         if(registerInfraction.status){

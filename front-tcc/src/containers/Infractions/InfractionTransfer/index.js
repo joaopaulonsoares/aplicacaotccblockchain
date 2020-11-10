@@ -47,7 +47,7 @@ class InfractionTranfer extends Component {
 
   async getInfractionTransferListData(){
     const infractionsCount =  await this.props.contract.methods.transferTicketsCount().call()
-    console.log("Requisições de transferência: ", infractionsCount)
+    //console.log("Requisições de transferência: ", infractionsCount)
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
@@ -56,8 +56,8 @@ class InfractionTranfer extends Component {
         infractionsList: [...this.state.infractionsList, infractionTransferList]
       })
     }
-    console.log("Lista de Requisições")
-    console.log(this.state.infractionsList)
+    //console.log("Lista de Requisições")
+    //console.log(this.state.infractionsList)
     this.setState({isFetchingInfo:false});
   }
 

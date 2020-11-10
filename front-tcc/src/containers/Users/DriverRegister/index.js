@@ -21,7 +21,6 @@ const useStyles = (theme) => ({
   chip: {
     margin: 2,
   },
-
   flexContainer: {
     display: "flex",
     flexDirection: "row",
@@ -51,11 +50,9 @@ class DriverRegisterPage extends Component {
         this.submitCreateSessionForm = this.submitCreateSessionForm.bind(this);
     }
 
-
     handleName = (e) => {
         this.setState({driverName: e.target.value});
     };  
-
 
     handleDriverAddress = (e) => {
         this.setState({driverAddress: e.target.value});
@@ -63,49 +60,41 @@ class DriverRegisterPage extends Component {
 
 
     async registerDriver(){
-        //var contract = this.props.contract;
-        //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
         var driverName = this.state.driverName;
         var driverAddress = this.state.driverAddress;
         
-        this.setState({waitingRegisterDriver:true})
+        this.setState({waitingRegisterDriver:true});
         
         const registerDriver = await this.props.contract.methods.registerDriver(driverName,0,driverAddress).send({ from: this.props.account })
         .on('transactionHash', function(hash){
-            console.log("hash", hash)
+            //console.log("hash", hash)
         })
         /*.on('confirmation', function(confirmationNumber, receipt){
             window.alert("Motorista Registrado com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
         })*/
         
         if(registerDriver.status){
-            window.alert("Motorista Registrado com sucesso no bloco " + registerDriver.blockNumber + " na transação " + registerDriver.transactionHash )
+            window.alert("Motorista Registrado com sucesso no bloco " + registerDriver.blockNumber + " na transação " + registerDriver.transactionHash);
         }else{
-            window.alert("Erro ao registrar Motorista. Tente novamente mais tarde" )
+            window.alert("Erro ao registrar Motorista. Tente novamente mais tarde" );
         }
 
-        this.setState({waitingRegisterDriver:false,  driverName:"", driverAddress:"" })
-        console.log(registerDriver)
+        this.setState({waitingRegisterDriver:false,  driverName:"", driverAddress:"" });
     }
 
     async getInfo(){
-        const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+        //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
         
-        console.log("Autoridades Registradas driver page: ", authoritiesCount)
+        //console.log("Autoridades Registradas driver page: ", authoritiesCount)
     }
 
     componentDidMount(){
-
-    //this.registerDriver();
-    console.log("Contrato info", this.props.contract)
-    this.getInfo()
-
+        this.getInfo()
     }
 
 
     async submitCreateSessionForm(event){
         event.preventDefault();
-        console.log("Chamou")
         await this.registerDriver()
     };
 

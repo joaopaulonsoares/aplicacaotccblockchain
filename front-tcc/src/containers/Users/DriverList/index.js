@@ -47,7 +47,7 @@ class DriverList extends Component {
 
   async getDriversListData(){
     const driversCount =  await this.props.contract.methods.driversCount().call()
-    console.log("Motoristas Registrados: ", driversCount)
+    //console.log("Motoristas Registrados: ", driversCount)
 
     // Load infraction -> WORKING
     for (var i = 0; i < driversCount; i++) {
@@ -56,8 +56,8 @@ class DriverList extends Component {
         driversList: [...this.state.driversList, driver]
       })
     }
-    console.log("Lista de Motoristas")
-    console.log(this.state.driversList)
+    //console.log("Lista de Motoristas")
+    //console.log(this.state.driversList)
     this.setState({isFetchingInfo:false});
   }
 

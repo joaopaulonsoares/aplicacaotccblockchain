@@ -35,7 +35,7 @@ class InfractionCancelTable extends Component {
 
   componentDidMount() {
     this._isTableMounted = true;
-    console.log(this.props)
+    //console.log(this.props)
 
     if(this._isTableMounted){
       //this.loadDataInTable( () => {

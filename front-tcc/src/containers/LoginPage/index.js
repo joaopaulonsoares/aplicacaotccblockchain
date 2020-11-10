@@ -4,8 +4,7 @@ import {Redirect } from "react-router-dom";
 import { Grid, TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import axiosInstance from './../../auth/axiosApi.js'
-import {TOKEN_OBTAIN_URL, DASHBOARD_BASE_URL} from './../../api_urls';
+import { DASHBOARD_BASE_URL} from './../../api_urls';
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -49,14 +48,14 @@ class LoginScreen extends React.Component {
   }
 
   loginMethod(event){
-    event.preventDefault();
+    /*event.preventDefault();
 
     axiosInstance.post(TOKEN_OBTAIN_URL, {
             username: this.state.username,
             password: this.state.password
         }).then(
             result => {
-              console.log(result)
+              //console.log(result)
                 axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
                 localStorage.setItem('access_token', result.data.access);
                 localStorage.setItem('refresh_token', result.data.refresh);
@@ -64,7 +63,7 @@ class LoginScreen extends React.Component {
             }
     ).catch (error => {
         throw error;
-    })
+    })*/
 
   }
 

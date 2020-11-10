@@ -47,7 +47,7 @@ class InfractionList extends Component {
 
   async getInfractionListData(){
     const infractionsCount =  await this.props.contract.methods.ticketsCount().call()
-    console.log("Infrações Registradas page: ", infractionsCount)
+    //console.log("Infrações Registradas page: ", infractionsCount)
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
@@ -56,8 +56,8 @@ class InfractionList extends Component {
         infractionsList: [...this.state.infractionsList, authoritie]
       })
     }
-    console.log("Lista de infrações")
-    console.log(this.state.infractionsList)
+    //console.log("Lista de infrações")
+    //console.log(this.state.infractionsList)
     this.setState({isFetchingInfo:false});
   }
 

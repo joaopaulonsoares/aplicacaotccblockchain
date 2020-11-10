@@ -47,7 +47,7 @@ class InfractionCancel extends Component {
 
   async getInfractionCancelListData(){
     const infractionsCount =  await this.props.contract.methods.cancelTicketsRequestCount().call()
-    console.log("Requisições de cancelamento: ", infractionsCount)
+    //console.log("Requisições de cancelamento: ", infractionsCount)
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
@@ -56,8 +56,10 @@ class InfractionCancel extends Component {
         infractionsList: [...this.state.infractionsList, infractionCancelList]
       })
     }
-    console.log("Lista de Requisições")
-    console.log(this.state.infractionsList)
+    
+    //console.log("Lista de Requisições")
+    //console.log(this.state.infractionsList)
+    
     this.setState({isFetchingInfo:false});
   }
 

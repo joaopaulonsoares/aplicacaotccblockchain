@@ -76,30 +76,33 @@ class AuthoritieRegisterPage extends Component {
         
         const registerAuthoritie = await this.props.contract.methods.registerAuthoritie(authoritieName,authoritieInitials,authoritieAddress).send({ from: this.props.account })
         .on('transactionHash', function(hash){
-            console.log("hash", hash)
+            //console.log("hash", hash)
         })
-        .on('confirmation', function(confirmationNumber, receipt){
+        /*.on('confirmation', function(confirmationNumber, receipt){
             window.alert("Autoridade Registrada com sucesso no bloco " + receipt.blockNumber + " na transação " + receipt.transactionHash )
             //console.log(receipt)
             this.setState({waitingRegisterAuthoritie:false })
-        })
-        
-        this.setState({waitingRegisterAuthoritie:false })
-        console.log(registerAuthoritie)
+        })*/
+
+        if(registerAuthoritie.status){
+            window.alert("Autoridade Registrada com sucesso no bloco " + registerAuthoritie.blockNumber + " na transação " + registerAuthoritie.transactionHash )
+        }else{
+            window.alert("Erro ao registrar Autoridade. Tente novamente mais tarde" );
+        }
+
+        this.setState({waitingRegisterAuthoritie:false,  authoritieName:"", authoritieAddress:"", authoritieInitials:""});
+
     }
 
     async getInfo(){
-        const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
-        
-        console.log("Autoridades Registradas driver page: ", authoritiesCount)
+        //const authoritiesCount =  await this.props.contract.methods.authoritiesCount().call()
+        //console.log("Autoridades Registradas driver page: ", authoritiesCount)
     }
 
     componentDidMount(){
-
-    //this.registerDriver();
-    console.log("Contrato info", this.props.contract)
-    this.getInfo()
-
+        //this.registerDriver();
+        //console.log("Contrato info", this.props.contract)
+        this.getInfo();
     }
 
     async submitCreateSessionForm(event){
