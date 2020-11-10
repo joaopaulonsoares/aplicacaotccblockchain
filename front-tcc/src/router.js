@@ -32,7 +32,6 @@ class PrivateRouteAuth extends Component{
             var currentAccount = this.props.account;
             var status = await authorities.filter(e => e.authoritieAddress === currentAccount).length > 0;
         
-
             if(status){
                 // It is an authoritie
                 this.setState({isAuthenticaded:true})
