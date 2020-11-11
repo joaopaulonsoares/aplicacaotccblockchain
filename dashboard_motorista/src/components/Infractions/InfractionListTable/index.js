@@ -8,6 +8,7 @@ import GavelIcon from '@material-ui/icons/Gavel';
 
 import CustomizedModal from '../../CustomizedModal/index'
 import InfractionCancelRequestForm from '../InfractionCancelRequestForm/index'
+import InfractionTransferRequestForm from '../InfractionTransferRequestForm/index'
 
 class InfractionListTable extends Component {
 
@@ -37,16 +38,15 @@ class InfractionListTable extends Component {
       totalCount:0,
       currentPage:1,
       loadingTransaction: false,
-      openCancelInfractionModalRequest:false
+      openCancelInfractionModalRequest:false,
+      openTransferInfractionModalRequest:false
     };
-    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalCancelInfractionClose = this.handleModalCancelInfractionClose.bind(this);
+    this.handleModalTransferInfractionClose = this.handleModalTransferInfractionClose.bind(this);
   }
-
 
   componentDidMount() {
     this._isTableMounted = true;
-    console.log(this.props)
-
     if(this._isTableMounted){
       //this.loadDataInTable( () => {
         this.setState({isLoadingTable:false});
@@ -54,52 +54,36 @@ class InfractionListTable extends Component {
     }
   }
 
-  async cancelInfraction(data){
-    if(window.confirm("Confirma que deseja cancelar infração " + data.id + " ?")){
-      this.setState({loadingTransaction:true})
-      const infractionCancel = await this.props.contract.methods.cancelInfraction(data.id).send({ from: this.props.account })
-
-      if(infractionCancel.status){
-        window.alert("Infracao Cancelada com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
-      }else{
-          window.alert("Erro ao cancelar Infracao. Tente novamente mais tarde" )
-      }
-      this.setState({loadingTransaction:false })
-      window.location.reload(false);
-    }
-  
-  }
 
   handleModalCancelInfractionOpen(rowData){
-    console.log(rowData)
-
     this.setState({infractionInfoRequest:rowData, openCancelInfractionModalRequest:true})
   }
 
-  handleModalClose(){
-    this.setState({loadingTransaction:false})
+  handleModalCancelInfractionClose(){
+    this.setState({infractionInfoRequest:"", openCancelInfractionModalRequest:false})
+  }
+
+  handleModalTransferInfractionOpen(rowData){
+    this.setState({infractionInfoRequest:rowData, openTransferInfractionModalRequest:true})
+  }
+
+  handleModalTransferInfractionClose(){
+    this.setState({infractionInfoRequest:"", openTransferInfractionModalRequest:false})
   }
     
   render(){
     const tableRef = React.createRef();
 
-    if(this.state.loadingTransaction){
-      return (<div align="center"> 
-                <Box width="auto" display="inline">
-                  <CircularProgress></CircularProgress> 
-                </Box>
-                <Box>
-                  Transação em Andamento
-                </Box>
-              </div>
-             )
-    }
+ 
       return (
           <Box width="auto" display="inline">
-              <CustomizedModal open={this.state.openCancelInfractionModalRequest} title="Recurso de Infração">
+              <CustomizedModal open={this.state.openCancelInfractionModalRequest} handleClose={this.handleModalCancelInfractionClose} title="Recurso de Infração">
                 <InfractionCancelRequestForm ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account}></InfractionCancelRequestForm>
               </CustomizedModal>
               
+              <CustomizedModal open={this.state.openTransferInfractionModalRequest} handleClose={this.handleModalCancelInfractionClose} title="Transferência de Infração">
+                <InfractionTransferRequestForm ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account}></InfractionTransferRequestForm>
+              </CustomizedModal>
               
               <MaterialTable
                 columns={this.columns}
@@ -112,15 +96,15 @@ class InfractionListTable extends Component {
                     onClick: (event, rowData) => (
                       this.handleModalCancelInfractionOpen(rowData)
                    ),
-                    disabled: rowData.statusOfInfraction === "Canceled"
+                    disabled: rowData.statusOfInfraction !== "Active"
                   }),
                   rowData => ({
                     icon: SendIcon,
                     tooltip: 'Transferir Infração',
                     onClick: (event, rowData) => (
-                      this.cancelInfraction(rowData)
+                      this.handleModalTransferInfractionOpen(rowData)
                    ),
-                    disabled: rowData.statusOfInfraction === "Canceled"
+                    disabled: rowData.statusOfInfraction !== "Active"
                   }),
                   rowData => ({
                     icon: AttachMoneyIcon,
@@ -128,7 +112,7 @@ class InfractionListTable extends Component {
                     onClick: (event, rowData) => (
                       this.cancelInfraction(rowData)
                    ),
-                    disabled: rowData.statusOfInfraction === "Canceled"
+                    disabled: rowData.statusOfInfraction !== "Active"
                   })
                 ]}
                 options={{
@@ -161,7 +145,6 @@ class InfractionListTable extends Component {
                 }}
                 title="Infrações Registradas"
                 
-                //onRowClick={(event, rowData, togglePanel) => togglePanel()}
               />
 
           </Box>

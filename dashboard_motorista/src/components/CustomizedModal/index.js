@@ -50,21 +50,17 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
-  const [open, setOpen] = React.useState({...props.open})
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   useEffect(() => {
-    setOpen(props.open);
+
   }, [props.open]);
 
   return (
     <div>
 
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
+        <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
           {props.title}
         </DialogTitle>
         <DialogContent dividers>

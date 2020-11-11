@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import CustomizedModal from '../../CustomizedModal/index'
+import ConfirmOrRejectTransferInfractionForm from '../../ConfirmOrRejecTransferInfractionForm/index'
+import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box';
 
 class InfractionTransferingTable extends Component {
@@ -28,7 +30,8 @@ class InfractionTransferingTable extends Component {
       currentPage:1,
       loadingTransaction: false
     };
-    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalTransferInfractionAcceptClose = this.handleModalTransferInfractionAcceptClose.bind(this);
+    this.handleModalTransferInfractionRejectClose = this.handleModalTransferInfractionRejectClose.bind(this);
   }
 
 
@@ -43,55 +46,72 @@ class InfractionTransferingTable extends Component {
     }
   }
 
-  async cancelInfraction(data){
-    if(window.confirm("Confirma que deseja cancelar infração " + data.id + " ?")){
-      this.setState({loadingTransaction:true})
-      const infractionCancel = await this.props.contract.methods.cancelInfraction(data.id).send({ from: this.props.account })
-
-      if(infractionCancel.status){
-        window.alert("Infracao Cancelada com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
-      }else{
-          window.alert("Erro ao cancelar Infracao. Tente novamente mais tarde" )
-      }
-      this.setState({loadingTransaction:false })
-      window.location.reload(false);
-    }
-  
-  }
 
   handleModalClose(){
     this.setState({loadingTransaction:false})
   }
+
+  handleModalTransferInfractionAcceptOpen(rowData){
+    this.setState({infractionInfoRequest:rowData, openTransferInfractionModalAcceptRequest:true})
+  }
+
+  handleModalTransferInfractionAcceptClose(){
+    this.setState({infractionInfoRequest:"", openTransferInfractionModalAcceptRequest:false});
+    window.location.reload(false);
+  }
+
+  handleModalTransferInfractionRejectOpen(rowData){
+    this.setState({infractionInfoRequest:rowData, openTransferInfractionModalRejectRequest:true})
+  }
+
+  handleModalTransferInfractionRejectClose(){
+    this.setState({infractionInfoRequest:"", openTransferInfractionModalRejectRequest:false});
+    window.location.reload(false);
+  }
+  
     
   render(){
     const tableRef = React.createRef();
 
-    if(this.state.loadingTransaction){
-      return (<div align="center"> 
-                <Box width="auto" display="inline">
-                  <CircularProgress></CircularProgress> 
-                </Box>
-                <Box>
-                  Transação em Andamento
-                </Box>
-              </div>
-             )
-    }
       return (
           <Box width="auto" display="inline">
+              <CustomizedModal open={this.state.openTransferInfractionModalAcceptRequest} handleClose={this.handleModalTransferInfractionAcceptClose} title="Aceitar transferência de Infração">
+                <ConfirmOrRejectTransferInfractionForm acceptTransfer={true} ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account} handleClose={this.handleModalTransferInfractionAcceptClose}></ConfirmOrRejectTransferInfractionForm>
+              </CustomizedModal>
+
+              <CustomizedModal open={this.state.openTransferInfractionModalRejectRequest} handleClose={this.handleModalTransferInfractionRejectClose} title="Rejeitar transferência de Infração">
+                <ConfirmOrRejectTransferInfractionForm acceptTransfer={false} ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account} handleClose={this.handleModalTransferInfractionRejectClose}></ConfirmOrRejectTransferInfractionForm>
+              </CustomizedModal>
 
               <MaterialTable
                 columns={this.columns}
                 tableRef={tableRef}
                 data={this.props.rows}
-
+                actions={[
+                  rowData => ({
+                    icon: 'check',
+                    tooltip: 'Aceitar pedido de Transferência',
+                    onClick: (event, rowData) => (
+                      this.handleModalTransferInfractionAcceptOpen(rowData)
+                   ),
+                    disabled: (rowData.status !== 0)
+                  }),
+                  rowData => ({
+                      icon: CloseIcon,
+                      tooltip: 'Rejeitar pedido de Transferência',
+                      onClick: (event, rowData) => (
+                        this.handleModalTransferInfractionRejectOpen(rowData)
+                     ),
+                      disabled: (rowData.status !== 0)
+                    })
+                ]}
                 options={{
                   sorting: true,
                   exportButton: true,
                   exportAllData: true,
                   exportFileName: "infrações de trânsito",
                   pageSize:10,
-                  pageSizeOptions:[5, 10, 20, 30, 40, 50, 100,1300],
+                  pageSizeOptions:[5, 10, 20, 30, 40, 50, 100],
                   emptyRowsWhenPaging:false,
                   removable:true,
                   actionsColumnIndex: -1

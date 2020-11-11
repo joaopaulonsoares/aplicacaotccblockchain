@@ -92,7 +92,7 @@ class InfractionCancelRequestForm extends Component {
         const { classes } = this.props;
 
         if(this.state.requestMadeSuccesfull){
-            return (<Alert severity="success">Solicitação Registrada com sucesso no bloco {this.state.request.blockNumber} na transação {this.state.request.transactionHash}. Veja mais <a>aqui</a> </Alert>)
+            return (<Alert severity="success">Solicitação Registrada com sucesso no bloco {this.state.request.blockNumber} na transação {this.state.request.transactionHash}. </Alert>)
         }
 
         return(

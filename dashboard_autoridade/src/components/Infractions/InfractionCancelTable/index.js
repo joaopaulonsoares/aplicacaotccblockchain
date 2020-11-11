@@ -108,7 +108,7 @@ class InfractionCancelTable extends Component {
                       onClick: (event, rowData) => (
                         this.acepptCancelInfractionRequest(rowData)
                      ),
-                      disabled: rowData.status !== 0
+                      disabled: (rowData.status !== 1 || rowData.status !== 2)
                     }),
                     rowData => ({
                         icon: 'delete',
@@ -116,7 +116,7 @@ class InfractionCancelTable extends Component {
                         onClick: (event, rowData) => (
                           this.rejectCancelInfractionRequest(rowData)
                        ),
-                        disabled: rowData.status !== 0
+                        disabled: (rowData.status !== 1 || rowData.status !== 2)
                       })
                   ]}
                 options={{

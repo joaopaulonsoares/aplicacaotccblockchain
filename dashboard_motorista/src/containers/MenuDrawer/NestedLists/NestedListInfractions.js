@@ -59,7 +59,7 @@ export default function NestedToolInfractions(props) {
               <TransferWithinAStationIcon></TransferWithinAStationIcon>
               </Icon>
           </ListItemIcon>
-          <ListItemText primary="Transferir Infração"/>
+          <ListItemText primary="Transferência de Infração"/>
         </ListItem>
 
         <ListItem button component={Link} to={INFRACTION_CANCEL_PAGE_URL} className={classes.nested}>
