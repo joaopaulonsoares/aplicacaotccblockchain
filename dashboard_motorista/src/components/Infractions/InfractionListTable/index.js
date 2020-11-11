@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import SendIcon from '@material-ui/icons/Send';

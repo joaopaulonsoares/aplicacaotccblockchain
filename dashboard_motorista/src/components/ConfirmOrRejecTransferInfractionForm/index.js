@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -93,8 +92,6 @@ class ConfirmOrRejectTransferInfractionForm extends Component {
     }
 
     render(){
-        const { classes } = this.props;
-
         if(this.state.requestMadeSuccesfull){
             return (<Alert severity="success">Transferência aceitada/rejeitada com sucesso no bloco {this.state.request.blockNumber} na transação {this.state.request.transactionHash}. </Alert>)
         }

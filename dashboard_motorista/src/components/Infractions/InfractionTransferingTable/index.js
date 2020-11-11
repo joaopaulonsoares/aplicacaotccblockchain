@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomizedModal from '../../CustomizedModal/index'
 import ConfirmOrRejectTransferInfractionForm from '../../ConfirmOrRejecTransferInfractionForm/index'
 import CloseIcon from '@material-ui/icons/Close';

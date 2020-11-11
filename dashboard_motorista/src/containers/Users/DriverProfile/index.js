@@ -5,33 +5,13 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Alert from '@material-ui/lab/Alert';
+
 
 const useStyles = (theme) => ({
   "@global": {
     body: {
       backgroundColor: "theme.palette.common.white",
     },
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  chip: {
-    margin: 2,
-  },
-
-  flexContainer: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  tableRoot: {
-    width: "100%",
-  },
-  tableWrapper: {
-    overflow: "auto",
   },
 });
 
@@ -62,7 +42,6 @@ class DriverProfile extends Component {
                 driverNumberOfPoints:driverInfo.numberOfPoints,
             })
         }
-
     }
 
     componentDidMount(){
@@ -149,7 +128,6 @@ class DriverProfile extends Component {
                         </Box>
                     </Grid>
                 </Grid>
-
             </Box>
         </Box>
         )

@@ -14,7 +14,7 @@ import ListIcon from '@material-ui/icons/List';
 import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL, INFRACTION_CANCEL_PAGE_URL, AUTHORITIE_LIST_PAGE_URL} from '../../../api_urls'
+import {INFRACTION_TRANSFERING_PAGE_URL, INFRACTION_CANCEL_PAGE_URL, AUTHORITIE_LIST_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
