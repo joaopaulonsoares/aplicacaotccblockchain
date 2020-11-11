@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import MaterialTable from "material-table";
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import Box from '@material-ui/core/Box';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import SendIcon from '@material-ui/icons/Send';
+import GavelIcon from '@material-ui/icons/Gavel';
+
+import CustomizedModal from '../../CustomizedModal/index'
+import InfractionCancelRequestForm from '../InfractionCancelRequestForm/index'
 
 class InfractionListTable extends Component {
 
@@ -31,7 +36,8 @@ class InfractionListTable extends Component {
       rows: [ ],
       totalCount:0,
       currentPage:1,
-      loadingTransaction: false
+      loadingTransaction: false,
+      openCancelInfractionModalRequest:false
     };
     this.handleModalClose = this.handleModalClose.bind(this);
   }
@@ -64,6 +70,12 @@ class InfractionListTable extends Component {
   
   }
 
+  handleModalCancelInfractionOpen(rowData){
+    console.log(rowData)
+
+    this.setState({infractionInfoRequest:rowData, openCancelInfractionModalRequest:true})
+  }
+
   handleModalClose(){
     this.setState({loadingTransaction:false})
   }
@@ -84,15 +96,35 @@ class InfractionListTable extends Component {
     }
       return (
           <Box width="auto" display="inline">
-
+              <CustomizedModal open={this.state.openCancelInfractionModalRequest} title="Recurso de Infração">
+                <InfractionCancelRequestForm ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account}></InfractionCancelRequestForm>
+              </CustomizedModal>
+              
+              
               <MaterialTable
                 columns={this.columns}
                 tableRef={tableRef}
                 data={this.props.rows}
                 actions={[
                   rowData => ({
-                    icon: 'delete',
-                    tooltip: 'Cancelar Infração',
+                    icon: GavelIcon,
+                    tooltip: 'Entrar com Recurso',
+                    onClick: (event, rowData) => (
+                      this.handleModalCancelInfractionOpen(rowData)
+                   ),
+                    disabled: rowData.statusOfInfraction === "Canceled"
+                  }),
+                  rowData => ({
+                    icon: SendIcon,
+                    tooltip: 'Transferir Infração',
+                    onClick: (event, rowData) => (
+                      this.cancelInfraction(rowData)
+                   ),
+                    disabled: rowData.statusOfInfraction === "Canceled"
+                  }),
+                  rowData => ({
+                    icon: AttachMoneyIcon,
+                    tooltip: 'Pagar Infração',
                     onClick: (event, rowData) => (
                       this.cancelInfraction(rowData)
                    ),

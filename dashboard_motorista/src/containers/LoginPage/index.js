@@ -44,113 +44,61 @@ class LoginScreen extends React.Component {
       password:"" ,
       succesfullLogin:false
     };
-    this.loginMethod = this.loginMethod.bind(this);
+    this.isUserAccountSync = this.isUserAccountSync.bind(this);
   }
 
-  loginMethod(event){
-    /*event.preventDefault();
+  async isUserAccountSync(){
+    try{
+      var currentAccount = this.props.account;
+      const isRegisteredDriver =  await this.props.contract.methods.checkIfDriverIsRegisteredByAddress(currentAccount).call();
 
-    axiosInstance.post(TOKEN_OBTAIN_URL, {
-            username: this.state.username,
-            password: this.state.password
-        }).then(
-            result => {
-              //console.log(result)
-                axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
-                localStorage.setItem('access_token', result.data.access);
-                localStorage.setItem('refresh_token', result.data.refresh);
-                this.setState({succesfullLogin:true})
-            }
-    ).catch (error => {
-        throw error;
-    })*/
-
-  }
-
-  handleEmailFormChange = (e) =>
-  {
-    this.setState({username: e.target.value});
-  };
-
-  handlePasswordFormChange = (e) =>
-  {
-    this.setState({password: e.target.value});
-  };
-
-
-  render(){
-    const { classes } = this.props;
-
-      return (
-        <div>
-          {this.state.succesfullLogin ?
-            <Redirect to={DASHBOARD_BASE_URL} />
-            :
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                  <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                  <Typography component="h1" variant="h5">
-                    Login
-                  </Typography>
-                  <form className={classes.form} noValidate>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="username"
-                      label="Username"
-                      name="username"
-                      value={this.state.username}
-                      onChange={(e)=>{this.handleEmailFormChange(e)}} 
-                      autoFocus
-                    />
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      name="password"
-                      label="Senha"
-                      type="password"
-                      id="password"
-                      value={this.state.password}
-                      autoComplete="current-password"
-                      onChange={(e)=>{this.handlePasswordFormChange(e)}}
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={this.loginMethod} 
-                    >
-                      Login
-                    </Button>
-                    <Grid container>
-                      <Grid item xs>
-                        <Link href="#" variant="body2">
-                          Forgot password?
-                        </Link>
-                      </Grid>
-                      <Grid item>
-                        <Link href="#" variant="body2">
-                          {"Don't have an account? Sign Up"}
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </form>
-                </div>
-              </Container>
-        }
-        </div>
-
-      )
+      if(isRegisteredDriver){
+          this.setState({succesfullLogin:true})
+      }else{
+          this.setState({succesfullLogin:false});
+      }
+    }catch(error){
+        //console.log("Erro")
+        console.log(error)
     }
+
+}
+
+componentDidMount(){
+  this.isUserAccountSync();
+}
+
+
+render(){
+  const { classes } = this.props;
+
+    return (
+      <div>
+        {this.state.succesfullLogin ?
+          <Redirect to={DASHBOARD_BASE_URL} />
+          :
+          <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography variant="h5"> 
+                  Você está logado na conta , 
+                </Typography >
+                <Typography variant="h4">
+                  {this.props.account}
+                </Typography>
+                <Typography variant="h5">
+                  e essa conta não é de um motorista registrado.
+                </Typography>
+              </div>
+            </Container>
+      }
+      </div>
+
+    )
+  }
 
   }
 

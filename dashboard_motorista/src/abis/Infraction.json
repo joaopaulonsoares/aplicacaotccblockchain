@@ -41,6 +41,24 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "CancelTicketEvent",
+      "type": "event"
+    },
+    {
       "inputs": [
         {
           "internalType": "string",
@@ -62,24 +80,6 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
-    },
-    {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "message",
-          "type": "string"
-        }
-      ],
-      "name": "CancelTicketEvent",
-      "type": "event"
     },
     {
       "inputs": [
@@ -337,6 +337,11 @@
           "internalType": "address",
           "name": "authoritieAddress",
           "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "exist",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -345,44 +350,6 @@
     {
       "inputs": [],
       "name": "authoritiesCount",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "authoritiesList",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "authoritiesListUint",
       "outputs": [
         {
           "internalType": "uint256",
@@ -453,17 +420,36 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "authoritieAddress",
+          "type": "address"
         }
       ],
-      "name": "driverListUint",
+      "name": "checkIfAuthoritieExistsByAddress",
       "outputs": [
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "driverAddress",
+          "type": "address"
+        }
+      ],
+      "name": "checkIfDriverIsRegisteredByAddress",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -498,6 +484,11 @@
           "internalType": "address",
           "name": "driverAddress",
           "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "exist",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -511,25 +502,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "driversList",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -652,38 +624,6 @@
           "internalType": "address",
           "name": "authorityResponsableAdress",
           "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "ownerInfraction",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "ticketList",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -13507,8 +13447,8 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xa7377a84dd7ca51ec59e84419d22d0c716c7e62a",
-      "transactionHash": "0xfc654b9d3b29cc53ac05704b6138a0f277b7d6df65f8a7440b40295a873868aa"
+      "address": "0x1db7bb257765f68aa70ece6a9d87cf6280d46b08",
+      "transactionHash": "0x099cd4b5d54a9517191bf1288a3d4ee7cfa6f2af6829164404adc1c4c1668087"
     }
   },
   "schemaVersion": "3.2.4",

@@ -12,7 +12,6 @@ class InfractionCancelTable extends Component {
     { field: 'ticketId', title: 'Id do Ticket', tooltip:'Id da infração'},
     { field: 'status', title: 'Status da requisição', tooltip:'Status da requisição( 0 -> Pending, 1 -> Accepted, 2 -> Rejected)'},
     { field: 'explanation', title: 'Explicação', tooltip:'Status da requisição( 0 -> Pending, 1 -> Accepted, 2 -> Rejected)'},
-    { field: 'driverAddress', title: 'Infrator Atual', tooltip:'Atual autor da infração' },
     { field: 'authorityResponsableAdress', title: 'Autoridade Responsável', tooltip:'Motorista que se deseja transferir'},
   ] 
     
@@ -44,37 +43,6 @@ class InfractionCancelTable extends Component {
     }
   }
 
-  async acepptCancelInfractionRequest(data){
-    if(window.confirm("Confirma que deseja cancelar infração " + data.id + " ?")){
-      this.setState({loadingTransaction:true})
-      const infractionCancel = await this.props.contract.methods.acceptCancelTicketRequest(data.id).send({ from: this.props.account })
-
-      if(infractionCancel.status){
-        window.alert("Infracao Cancelada com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
-      }else{
-          window.alert("Erro ao cancelar Infracao. Tente novamente mais tarde" )
-      }
-      this.setState({loadingTransaction:false })
-      window.location.reload(false);
-    }
-  
-  }
-
-  async rejectCancelInfractionRequest(data){
-    if(window.confirm("Confirma que deseja recusar o pedido de cancelamento da infração " + data.id + " ?")){
-      this.setState({loadingTransaction:true})
-      const infractionCancel = await this.props.contract.methods.rejectCancelTicketRequest(data.id).send({ from: this.props.account })
-
-      if(infractionCancel.status){
-        window.alert("Pedido rejeitado com sucesso no bloco " + infractionCancel.blockNumber + " na transação " + infractionCancel.transactionHash )
-      }else{
-          window.alert("Erro ao rejeitar pedido de cancelamento da Infracao. Tente novamente mais tarde" )
-      }
-      this.setState({loadingTransaction:false })
-      window.location.reload(false);
-    }
-  
-  }
 
   handleModalClose(){
     this.setState({loadingTransaction:false})
@@ -101,24 +69,6 @@ class InfractionCancelTable extends Component {
                 columns={this.columns}
                 tableRef={tableRef}
                 data={this.props.rows}
-                actions={[
-                    rowData => ({
-                      icon: 'check',
-                      tooltip: 'Aceitar pedido de cancelamento',
-                      onClick: (event, rowData) => (
-                        this.acepptCancelInfractionRequest(rowData)
-                     ),
-                      disabled: rowData.status !== 0
-                    }),
-                    rowData => ({
-                        icon: 'delete',
-                        tooltip: 'Rejeitar pedido de cancelamento',
-                        onClick: (event, rowData) => (
-                          this.rejectCancelInfractionRequest(rowData)
-                       ),
-                        disabled: rowData.status !== 0
-                      })
-                  ]}
                 options={{
                   sorting: true,
                   exportButton: true,

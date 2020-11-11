@@ -113,7 +113,7 @@ class InfractionTransferingTable extends Component {
                     lastTooltip: 'Última página'
                   }
                 }}
-                title="Requisições para transferência Registradas"
+                title={this.props.title}
                 
                 //onRowClick={(event, rowData, togglePanel) => togglePanel()}
               />

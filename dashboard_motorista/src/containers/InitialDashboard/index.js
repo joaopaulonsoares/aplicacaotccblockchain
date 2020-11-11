@@ -4,9 +4,7 @@ import Box from '@material-ui/core/Box';
 import {
   withStyles
 } from '@material-ui/core/styles';
-//import Web3 from 'web3'
 
-//https://www.youtube.com/watch?v=LzdMosLzj80
 const useStyles = theme => ({
   '@global': {
     body: {
@@ -51,11 +49,6 @@ class InitialDashboard extends Component {
     };
   }
 
-
-  async componentDidMount() {
-
-  }
-
   componentWillUnmount() {
     this._isMounted = false;
   }
@@ -64,21 +57,14 @@ class InitialDashboard extends Component {
     this.openSnackBar = false;
   }
 
-
   render() {
     
-    
     return  (
-      
         <React.Fragment>
           <Paper>
             <Box style={{padding: '1rem'}}>
-              <center><h1>Dados da participação pública da Câmara dos Deputados</h1>
-              <img src="/img/initial_dashboard.svg" height="500" width="500" alt="Imagem logo" />
-              <h2 style={{lineHeight: '1.5', padding: '1rem', textAlign: 'justify'}}><center> Bem vindo a plataforma de participação pública da Câmara dos Deputados! </center></h2>
-              <p style={{fontSize: '1.2rem', lineHeight: '2.5', padding: '0 5rem 0 5rem', textAlign: 'justify'}}> Neste portal, nós disponibilizamos os dados em forma gráfica e textual das plataformas de participação da Câmara dos Deputados.
-                Como ainda estamos em fase de protótipo, somente os relatórios estão disponíveis. Estes dados são obtidos diretamente das API's das aplicações e são dados reais das plataformas, obtidos no momento que a página está sendo carregada.
-                </p> <p style={{fontSize: '1.2rem', lineHeight: '1.5', padding: '1rem', textAlign: 'justify'}}><center> Agradecemos a sua colaboração!</center></p>
+              <center>
+                <h1>Dashboard do motorista</h1>
               </center>
             </Box>
           </Paper>
@@ -90,20 +76,3 @@ class InitialDashboard extends Component {
 }
 
 export default withStyles(useStyles)(InitialDashboard);
-
-/*
-  componentDidMount() {
-    this._isMounted = true;
-    
-    if(this._isMounted){
-      // If we need to wait for something to full render before render the page
-      this.checkIfUserIsAuthenticaded(() => {
-
-
-      });
-    }
-    
-   this.setState({isLoadingPage:false});
-
-  }
-  */

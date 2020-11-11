@@ -55,17 +55,18 @@ class App extends Component {
     if(networkData) {
       const infractionContract = new web3.eth.Contract(Infraction.abi, networkData.address)
       this.setState({ infractionContract })
-      const authoritiesCount = await infractionContract.methods.authoritiesCount().call()
+      //const driversCount = await infractionContract.methods.driversCount().call()
       //console.log("Autoridades Registradas: ", authoritiesCount)
-      this.setState({ authoritiesCount })
+      //this.setState({ driversCount })
       
       // Load authorities -> WORKING
-       for (var i = 0; i <= authoritiesCount; i++) {
-        const authoritie = await infractionContract.methods.authorities(i).call()
+      /*
+       for (var i = 0; i <= driversCount; i++) {
+        const authoritie = await infractionContract.methods.drivers(i).call()
         this.setState({
           authorities: [...this.state.authorities, authoritie]
         })
-      }
+      }*/
       //console.log("Lista de autoridades")
       //console.log(this.state.authorities)
 
@@ -98,7 +99,7 @@ class App extends Component {
       <div className="App">
         {/*<StylesProvider generateClassName={generateClassName}>*/}
          <ThemeProvider theme={customTheme}>
-              <AppRouter account={this.state.account} contract={this.state.infractionContract} authorities={this.state.authorities} theme={customTheme}></AppRouter>
+              <AppRouter account={this.state.account} contract={this.state.infractionContract} theme={customTheme}></AppRouter>
         </ThemeProvider>
         {/*</StylesProvider>*/}
       </div>

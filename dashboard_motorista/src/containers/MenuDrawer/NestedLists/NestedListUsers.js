@@ -14,8 +14,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-
-import {DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL} from '../../../api_urls'
+import WarningIcon from '@material-ui/icons/Warning';
+import {DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL, INFRACTION_LIST_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,39 +47,11 @@ export default function NestedToolListUser(props) {
         <ListItemIcon>
           <AccountCircleIcon></AccountCircleIcon>
         </ListItemIcon>
-        <ListItemText primary={"Usuários"} />
+        <ListItemText primary={"Área do Motorista"} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-
-        <ListItem button component={Link} to={DRIVER_LIST_PAGE_URL} className={classes.nested}>
-            <ListItemIcon>
-              <Icon>
-                <PeopleIcon></PeopleIcon>
-              </Icon>
-            </ListItemIcon>
-            <ListItemText primary="Motoristas" />
-        </ListItem>
-
-          
-        <ListItem button component={Link} to={DRIVER_REGISTER_PAGE_URL} className={classes.nested}>
-        <ListItemIcon>
-            <Icon>
-            <GroupAddIcon></GroupAddIcon>
-            </Icon>
-        </ListItemIcon>
-        <ListItemText primary="Registrar Motorista" />
-        </ListItem>
-
-        <ListItem button component={Link} to={AUTHORITIE_LIST_PAGE_URL} className={classes.nested}>
-            <ListItemIcon>
-              <Icon>
-                <PersonIcon></PersonIcon>
-              </Icon>
-            </ListItemIcon>
-            <ListItemText primary="Autoridades" />
-        </ListItem>
 
         <ListItem  button component={Link} to={AUTHORITIE_REGISTER_PAGE_URL} className={classes.nested}>
             <ListItemIcon>
@@ -87,7 +59,16 @@ export default function NestedToolListUser(props) {
                 <PersonAddIcon></PersonAddIcon>
               </Icon>
             </ListItemIcon>
-            <ListItemText primary="Registrar Autoridade" />
+            <ListItemText primary="Minhas Informações" />
+        </ListItem>
+
+        <ListItem button component={Link} to={INFRACTION_LIST_PAGE_URL} className={classes.nested}>
+            <ListItemIcon>
+              <Icon>
+                <WarningIcon></WarningIcon>
+              </Icon>
+            </ListItemIcon>
+            <ListItemText primary="Minhas Infrações" />
         </ListItem>
         
         </List>

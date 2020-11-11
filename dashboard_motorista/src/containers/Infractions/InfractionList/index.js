@@ -51,10 +51,13 @@ class InfractionList extends Component {
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
-      const authoritie = await this.props.contract.methods.tickets(i).call()
-      this.setState({
-        infractionsList: [...this.state.infractionsList, authoritie]
-      })
+      const infraction = await this.props.contract.methods.tickets(i).call();
+      if(infraction.infractorDriverAddress === this.props.account){
+        this.setState({
+          infractionsList: [...this.state.infractionsList, infraction]
+        })
+      }
+
     }
     //console.log("Lista de infrações")
     //console.log(this.state.infractionsList)

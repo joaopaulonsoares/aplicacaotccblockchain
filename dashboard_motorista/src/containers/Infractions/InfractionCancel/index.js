@@ -51,10 +51,14 @@ class InfractionCancel extends Component {
 
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
-      const infractionCancelList = await this.props.contract.methods.cancelTicketsRequests(i).call()
-      this.setState({
-        infractionsList: [...this.state.infractionsList, infractionCancelList]
-      })
+      const infractionCancelList = await this.props.contract.methods.cancelTicketsRequests(i).call();
+      
+      if(infractionCancelList.driverAddress === this.props.account){
+        this.setState({
+          infractionsList: [...this.state.infractionsList, infractionCancelList]
+        })
+      }
+
     }
     
     //console.log("Lista de Requisições")

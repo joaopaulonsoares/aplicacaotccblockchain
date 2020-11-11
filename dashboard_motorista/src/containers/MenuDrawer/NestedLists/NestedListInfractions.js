@@ -10,12 +10,11 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import GavelIcon from '@material-ui/icons/Gavel';
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import PostAddIcon from '@material-ui/icons/PostAdd';
+import ListIcon from '@material-ui/icons/List';
 import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL, INFRACTION_CANCEL_PAGE_URL} from '../../../api_urls'
+import {INFRACTION_LIST_PAGE_URL, INFRACTION_REGISTER_PAGE_URL, INFRACTION_TRANSFERING_PAGE_URL, INFRACTION_CANCEL_PAGE_URL, AUTHORITIE_LIST_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,30 +46,12 @@ export default function NestedToolInfractions(props) {
         <ListItemIcon>
           <GavelIcon></GavelIcon>
         </ListItemIcon>
-        <ListItemText primary={"Infrações"} />
+        <ListItemText primary={"Serviços"} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
 
-        <ListItem button component={Link} to={INFRACTION_LIST_PAGE_URL} className={classes.nested}>
-            <ListItemIcon>
-              <Icon>
-                <ReceiptIcon></ReceiptIcon>
-              </Icon>
-            </ListItemIcon>
-            <ListItemText primary="Lista Infrações" />
-        </ListItem>
-
-          
-        <ListItem button component={Link} to={INFRACTION_REGISTER_PAGE_URL} className={classes.nested}>
-          <ListItemIcon>
-              <Icon>
-              <PostAddIcon></PostAddIcon>
-              </Icon>
-          </ListItemIcon>
-          <ListItemText primary="Registrar Infração"/>
-        </ListItem>
 
         <ListItem button component={Link} to={INFRACTION_TRANSFERING_PAGE_URL} className={classes.nested}>
           <ListItemIcon>
@@ -78,7 +59,7 @@ export default function NestedToolInfractions(props) {
               <TransferWithinAStationIcon></TransferWithinAStationIcon>
               </Icon>
           </ListItemIcon>
-          <ListItemText primary="Transferência de Infrações"/>
+          <ListItemText primary="Transferir Infração"/>
         </ListItem>
 
         <ListItem button component={Link} to={INFRACTION_CANCEL_PAGE_URL} className={classes.nested}>
@@ -87,7 +68,16 @@ export default function NestedToolInfractions(props) {
               <ClearIcon></ClearIcon>
               </Icon>
           </ListItemIcon>
-          <ListItemText primary="Cancelamento de Infrações"/>
+          <ListItemText primary="Recurso de Infração"/>
+        </ListItem>
+
+        <ListItem button component={Link} to={AUTHORITIE_LIST_PAGE_URL} className={classes.nested}>
+          <ListItemIcon>
+              <Icon>
+              <ListIcon></ListIcon>
+              </Icon>
+          </ListItemIcon>
+          <ListItemText primary="Lista de Autoridades"/>
         </ListItem>
 
         </List>

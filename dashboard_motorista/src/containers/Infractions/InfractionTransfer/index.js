@@ -32,7 +32,7 @@ const useStyles = (theme) => ({
 });
 
 
-class InfractionTranfer extends Component {
+class InfractionTransfer extends Component {
   _isMounted = false;
 
   constructor(props) {
@@ -41,7 +41,9 @@ class InfractionTranfer extends Component {
       openSnackBar: false,
       snackBarMessageError: "",
       isFetchingInfo:true,
-      infractionsList:[]
+      infractionsList:[],
+      infractionsTransferRequestsReceived:[],
+      infractionsTransferRequestsRequested:[],
     };
   }
 
@@ -52,9 +54,11 @@ class InfractionTranfer extends Component {
     // Load infraction -> WORKING
     for (var i = 0; i < infractionsCount; i++) {
       const infractionTransferList = await this.props.contract.methods.tranferTicketsRequests(i).call()
-      this.setState({
-        infractionsList: [...this.state.infractionsList, infractionTransferList]
-      })
+      if(infractionTransferList.currentOwnerAddress === this.props.account){
+        this.setState({infractionsTransferRequestsRequested: [...this.state.infractionsTransferRequestsRequested, infractionTransferList]})
+      }else if(infractionTransferList.requestedInfractorAddress === this.props.account){
+        this.setState({infractionsTransferRequestsReceived: [...this.state.infractionsTransferRequestsReceived, infractionTransferList]})
+      }
     }
     //console.log("Lista de Requisições")
     //console.log(this.state.infractionsList)
@@ -84,11 +88,14 @@ class InfractionTranfer extends Component {
     return (
       <React.Fragment>
           <Box>
-            <InfractionTransferingTable rows={this.state.infractionsList} contract={this.props.contract} account={this.props.account}></InfractionTransferingTable>
+            <InfractionTransferingTable rows={this.state.infractionsTransferRequestsReceived} contract={this.props.contract} account={this.props.account} title="Requisições de transferência de infrações recebidas"></InfractionTransferingTable>
+          </Box>
+          <Box paddingTop={3}>
+            <InfractionTransferingTable rows={this.state.infractionsTransferRequestsRequested} contract={this.props.contract} account={this.props.account} title="Requisições de transferência de infrações solicitadas"></InfractionTransferingTable>
           </Box>
         </React.Fragment>
     );
   }
 }
 
-export default withStyles(useStyles)(InfractionTranfer);
+export default withStyles(useStyles)(InfractionTransfer);

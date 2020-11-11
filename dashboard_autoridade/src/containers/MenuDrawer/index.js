@@ -43,7 +43,7 @@ export default function MenuDrawer(props) {
             <MenuIcon></MenuIcon>
           </IconButton>
           <Typography component="h1" variant="h6" noWrap className={classes.title}>
-            Olá, {props.account}
+            Olá Autoridade de Trânsito, {props.account}
           </Typography>
         </Toolbar>
       </AppBar>

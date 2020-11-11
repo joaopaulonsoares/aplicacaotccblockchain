@@ -1,14 +1,12 @@
 import React from 'react';
 import {Redirect } from "react-router-dom";
 
-import { Grid, TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { DASHBOARD_BASE_URL} from './../../api_urls';
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -48,22 +46,6 @@ class LoginScreen extends React.Component {
   }
 
   async isUserAccountSync(){
-    /*event.preventDefault();
-
-    axiosInstance.post(TOKEN_OBTAIN_URL, {
-            username: this.state.username,
-            password: this.state.password
-        }).then(
-            result => {
-              //console.log(result)
-                axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
-                localStorage.setItem('access_token', result.data.access);
-                localStorage.setItem('refresh_token', result.data.refresh);
-                this.setState({succesfullLogin:true})
-            }
-    ).catch (error => {
-        throw error;
-    })*/
       try{
         var authorities = this.props.authorities;
         var currentAccount = this.props.account;
@@ -81,17 +63,7 @@ class LoginScreen extends React.Component {
       }
 
   }
-
-  handleEmailFormChange = (e) =>
-  {
-    this.setState({username: e.target.value});
-  };
-
-  handlePasswordFormChange = (e) =>
-  {
-    this.setState({password: e.target.value});
-  };
-
+  
   componentDidMount(){
     this.isUserAccountSync();
   }
