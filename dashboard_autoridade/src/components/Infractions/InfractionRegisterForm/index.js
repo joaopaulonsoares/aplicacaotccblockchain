@@ -118,7 +118,7 @@ class InfractionRegisterForm extends React.Component {
         var dateInfractionFormated = dateInfraction.getMonth() + "/" + dateInfraction.getDay() + "/" + dateInfraction.getFullYear()
         var infractionPoints = parseInt(this.state.infractionPoints);
         var observations = this.state.observations;
-        var valueToPay = 1;
+        var valueToPay = 10000;
         var statusOfInfraction = "Active";
         var infractorDriverAddress = this.state.infractorDriverAddress;
         var infractorDriverId =  this.state.infractorDriverId;
