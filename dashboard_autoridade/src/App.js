@@ -7,6 +7,8 @@ import Web3 from 'web3'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Infraction from './abis/Infraction.json'
 
+
+
 /*import { StylesProvider } from '@material-ui/core/styles';*/
 /*const generateClassName = (rule, styleSheet) => `${styleSheet.options.classNamePrefix}-${rule.key}`;*/
 

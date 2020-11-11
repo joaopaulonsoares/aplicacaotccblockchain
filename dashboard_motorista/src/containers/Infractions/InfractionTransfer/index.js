@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import InfractionTransferingTable from '../../../components/Infractions/InfractionTransferingTable/index.js'
+import InfractionTransferingTable from '../../../components/Infractions/InfractionTransferingTable/index.js';
+import InfractionTransferingRequestedTable from '../../../components/Infractions/InfractionTransferingRequestedTable/index'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = (theme) => ({
@@ -91,7 +92,7 @@ class InfractionTransfer extends Component {
             <InfractionTransferingTable rows={this.state.infractionsTransferRequestsReceived} contract={this.props.contract} account={this.props.account} title="Requisições de transferência de infrações recebidas"></InfractionTransferingTable>
           </Box>
           <Box paddingTop={3}>
-            <InfractionTransferingTable rows={this.state.infractionsTransferRequestsRequested} contract={this.props.contract} account={this.props.account} title="Requisições de transferência de infrações solicitadas"></InfractionTransferingTable>
+            <InfractionTransferingRequestedTable rows={this.state.infractionsTransferRequestsRequested} contract={this.props.contract} account={this.props.account} title="Requisições de transferência de infrações solicitadas"></InfractionTransferingRequestedTable>
           </Box>
         </React.Fragment>
     );

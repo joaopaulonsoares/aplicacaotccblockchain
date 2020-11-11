@@ -37,7 +37,7 @@ class InfractionTransferingTable extends Component {
   componentDidMount() {
     this._isTableMounted = true;
     //console.log(this.props)
-
+    console.log(this.props)
     if(this._isTableMounted){
       //this.loadDataInTable( () => {
         this.setState({isLoadingTable:false});
@@ -93,7 +93,7 @@ class InfractionTransferingTable extends Component {
                     onClick: (event, rowData) => (
                       this.handleModalTransferInfractionAcceptOpen(rowData)
                    ),
-                    disabled: (rowData.status !== 0)
+                    disabled: rowData.status !== "0"
                   }),
                   rowData => ({
                       icon: CloseIcon,
@@ -101,7 +101,7 @@ class InfractionTransferingTable extends Component {
                       onClick: (event, rowData) => (
                         this.handleModalTransferInfractionRejectOpen(rowData)
                      ),
-                      disabled: (rowData.status !== 0)
+                      disabled: rowData.status !== "0"
                     })
                 ]}
                 options={{

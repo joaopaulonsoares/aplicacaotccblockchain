@@ -99,7 +99,8 @@ class ConfirmOrRejectTransferInfractionForm extends Component {
         if(this.state.waitingTransferRequest){
             return(
                 <Box display="flex" justifyContent="center" paddingTop={1} paddingBottom={2}>
-                    <CircularProgress>Transação em andamento</CircularProgress>
+                    <CircularProgress></CircularProgress>
+                    <Box><Typography>Transação em andamento</Typography></Box>
                 </Box>
             )
         }
