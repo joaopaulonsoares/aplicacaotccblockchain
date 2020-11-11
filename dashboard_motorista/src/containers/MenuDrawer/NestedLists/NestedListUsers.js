@@ -10,12 +10,9 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import PeopleIcon from '@material-ui/icons/People';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonIcon from '@material-ui/icons/Person';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import WarningIcon from '@material-ui/icons/Warning';
-import {DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL, INFRACTION_LIST_PAGE_URL} from '../../../api_urls'
+import { INFRACTION_LIST_PAGE_URL, DRIVER_PROFILE_PAGE_URL} from '../../../api_urls'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,13 +50,13 @@ export default function NestedToolListUser(props) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
 
-        <ListItem  button component={Link} to={AUTHORITIE_REGISTER_PAGE_URL} className={classes.nested}>
+        <ListItem  button component={Link} to={DRIVER_PROFILE_PAGE_URL} className={classes.nested}>
             <ListItemIcon>
               <Icon>
-                <PersonAddIcon></PersonAddIcon>
+                <PersonIcon></PersonIcon>
               </Icon>
             </ListItemIcon>
-            <ListItemText primary="Minhas Informações" />
+            <ListItemText primary="Meu Perfil" />
         </ListItem>
 
         <ListItem button component={Link} to={INFRACTION_LIST_PAGE_URL} className={classes.nested}>

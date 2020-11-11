@@ -11,9 +11,9 @@ import AuthoritieRegisterPage from './containers/Users/AuthoritieRegister/index'
 import InfractionTransfer from './containers/Infractions/InfractionTransfer/index'
 import AuthoritieList from './containers/Users/AuthoritieList/index'
 import InfractionCancel from './containers/Infractions/InfractionCancel/index'
-import { INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL,INFRACTION_REGISTER_PAGE_URL,
-    DRIVER_REGISTER_PAGE_URL, DRIVER_LIST_PAGE_URL, AUTHORITIE_REGISTER_PAGE_URL, AUTHORITIE_LIST_PAGE_URL,INFRACTION_TRANSFERING_PAGE_URL,
-    INFRACTION_CANCEL_PAGE_URL} from './api_urls'
+import DriverProfile from './containers/Users/DriverProfile/index'
+import { INITIAL_PAGE_URL, DASHBOARD_BASE_URL, INFRACTION_LIST_PAGE_URL, AUTHORITIE_LIST_PAGE_URL,INFRACTION_TRANSFERING_PAGE_URL,
+    INFRACTION_CANCEL_PAGE_URL, DRIVER_PROFILE_PAGE_URL} from './api_urls'
 
 
 class PrivateRouteAuth extends Component{
@@ -102,6 +102,9 @@ function AppRouter(props){
                     </Route>
                     <Route exact path={INFRACTION_CANCEL_PAGE_URL}>
                         <InfractionCancel contract={props.contract} account={props.account}></InfractionCancel>
+                    </Route>
+                    <Route exact path={DRIVER_PROFILE_PAGE_URL}>
+                        <DriverProfile contract={props.contract} account={props.account}></DriverProfile>
                     </Route>
                 </MenuDrawer>
             </PrivateRouteAuth>

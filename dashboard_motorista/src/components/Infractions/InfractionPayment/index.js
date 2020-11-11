@@ -22,54 +22,28 @@ class InfractionPayment extends Component {
   constructor(props){
         super(props);
         this.state = { 
-            waitingTransferRequest:false,
+            waitingPaymentRequest:false,
             requestMadeSuccesfull:false,
             request:""
         };
-        this.confirmTransferRequest = this.confirmTransferRequest.bind(this);
-        this.rejectTransferRequest = this.rejectTransferRequest.bind(this);
-        this.handleAcceptOrRejectTransfer = this.handleAcceptOrRejectTransfer.bind(this);
+        this.payInfraction = this.payInfraction.bind(this);
     }
 
-    async confirmTransferRequest(){
-        var transferInfractionRequestId = this.props.ticket.id;
-        this.setState({waitingTransferRequest:true});
-        const transferAcceptedTicketRequest = await this.props.contract.methods.acceptTransferTicketRequest(transferInfractionRequestId).send({ from: this.props.account })
-        .on('transactionHash', function(hash){
-            //console.log("hash", hash)
-        })
-    
-        if(transferAcceptedTicketRequest.status){
-            this.setState({request:transferAcceptedTicketRequest, requestMadeSuccesfull:true});
+    async payInfraction(){
+        var ticketId = this.props.ticket.id;
+
+        this.setState({waitingPaymentRequest:true});
+        const paymentAcceptedTicketRequest = await this.props.contract.methods.payInfraction(ticketId).send({ from: this.props.account, value:this.props.ticket.valueToPay })
+        
+        if(paymentAcceptedTicketRequest.status){
+            this.setState({request:paymentAcceptedTicketRequest, requestMadeSuccesfull:true});
         }else{
-            window.alert("Erro ao confirmar transferência de infração. Tente novamente mais tarde" );
+            window.alert("Erro ao pagar infração. Tente novamente mais tarde" );
         }
-        this.setState({requestMadeSuccesfull:true, waitingTransferRequest:false});
+
+        this.setState({requestMadeSuccesfull:true, waitingPaymentRequest:false});
     }
 
-    async rejectTransferRequest(){
-        var transferInfractionRequestId = this.props.ticket.id;
-        this.setState({waitingTransferRequest:true});
-        const transferAcceptedTicketRequest = await this.props.contract.methods.rejectTransferTicketRequest(transferInfractionRequestId).send({ from: this.props.account })
-    
-        if(transferAcceptedTicketRequest.status){
-            this.setState({request:transferAcceptedTicketRequest, requestMadeSuccesfull:true});
-        }else{
-            window.alert("Erro ao rejeitar transferência de infração. Tente novamente mais tarde" );
-        }
-        this.setState({requestMadeSuccesfull:true, waitingTransferRequest:false});
-    }
-
-    async handleAcceptOrRejectTransfer(e){
-        e.preventDefault();
-        if(this.props.acceptTransfer){
-            this.confirmTransferRequest();
-        }else{
-            this.rejectTransferRequest();
-        }
-    }
-
-    //TODO -> Fazer função de pagamento
 
     componentDidMount(){
         console.log(this.props)
@@ -79,17 +53,6 @@ class InfractionPayment extends Component {
 
         if(this.state.requestMadeSuccesfull){
             return (<Alert severity="success">Pagamento realizado com sucesso. Informações no bloco {this.state.request.blockNumber} na transação {this.state.request.transactionHash}. </Alert>)
-        }
-
-        if(this.state.waitingTransferRequest){
-            return(
-                <Box display="flex" justifyContent="center" paddingTop={1} paddingBottom={2}>
-                    <CircularProgress></CircularProgress>
-                    <Box>
-                        <Typography>Transação em andamento</Typography>
-                    </Box>
-                </Box>
-            )
         }
 
         return(
@@ -102,10 +65,10 @@ class InfractionPayment extends Component {
                         </Box>
                     </Grid>
 
-                    <Typography variant="h5" color="textSecondary">Confirma que deseja realizar o pagamento da infração TICKET_ID no valor de VALOR para AUTORIDADE?</Typography>
+                    <Typography variant="h5" color="textSecondary">Confirma que deseja realizar o pagamento da infração {this.props.ticket.id} no valor de {this.props.ticket.valueToPay} para {this.props.ticket.authorityResponsableAdress}?</Typography>
 
                     <Grid item xs={12}>
-                        {this.state.waitingTransferRequest ? 
+                        {this.state.waitingPaymentRequest ? 
                             (
                                 <Box display="flex" justifyContent="center" paddingTop={1} paddingBottom={2}>
                                     <CircularProgress></CircularProgress>
@@ -116,7 +79,7 @@ class InfractionPayment extends Component {
                             (
                                 <Box display="flex" justifyContent="center" >
                                     <Box m={1}><Button onClick={this.props.handleClose} variant="contained" color="secondary"> Cancelar </Button></Box>
-                                    <Box m={1}><Button variant="contained" color="primary" onClick={(e) => { this.handleAcceptOrRejectTransfer(e) }}> Confirmar </Button></Box>
+                                    <Box m={1}><Button variant="contained" color="primary" onClick={(e) => { this.payInfraction(e) }}> Confirmar </Button></Box>
                                 </Box>
                             ) 
                         }

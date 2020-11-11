@@ -13,13 +13,11 @@ module.exports = Object.freeze({
         ESTUDIO_PAGE_URL: '/estudio', //Application Estudio Page
         DASHBOARD_BASE_URL: '/dashboard/',
         INFRACTION_LIST_PAGE_URL: '/infraction_list',
-        INFRACTION_REGISTER_PAGE_URL: '/infraction_register',
         INFRACTION_TRANSFERING_PAGE_URL: '/infraction_transfering',
         INFRACTION_CANCEL_PAGE_URL: '/infraction_cancel',
-        DRIVER_REGISTER_PAGE_URL: '/driver_register',
         DRIVER_LIST_PAGE_URL: '/driver_list',
-        AUTHORITIE_REGISTER_PAGE_URL: '/authoritie_register',
         AUTHORITIE_LIST_PAGE_URL: '/authoritie_list',
+        DRIVER_PROFILE_PAGE_URL: '/perfil',
 
     //API'S BACKEND
         //AUTH URL'S

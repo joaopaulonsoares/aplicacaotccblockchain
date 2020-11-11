@@ -2,45 +2,6 @@
   "contractName": "Infraction",
   "abi": [
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_cancelTicketRequestId",
-          "type": "uint256"
-        }
-      ],
-      "name": "acceptCancelTicketRequest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tranferTicketRequestId",
-          "type": "uint256"
-        }
-      ],
-      "name": "acceptTransferTicketRequest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ticketId",
-          "type": "uint256"
-        }
-      ],
-      "name": "payInfraction",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "stateMutability": "nonpayable",
       "type": "constructor"
@@ -57,70 +18,6 @@
       ],
       "name": "CancelTicketEvent",
       "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_sigla",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_authoritieAddress",
-          "type": "address"
-        }
-      ],
-      "name": "registerAuthoritie",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ticketId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_explanation",
-          "type": "string"
-        }
-      ],
-      "name": "registerCancelTicketRequest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "numberOfPoints",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_driverAddress",
-          "type": "address"
-        }
-      ],
-      "name": "registerDriver",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
     },
     {
       "anonymous": false,
@@ -214,83 +111,12 @@
     {
       "inputs": [
         {
-          "internalType": "string",
-          "name": "_vehiclePlate",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_infractionCategory",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_dateInfraction",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_infractionPoints",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_observations",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_valueToPay",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_statusOfInfraction",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_infractorDriverAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_infractorDriverId",
-          "type": "uint256"
-        }
-      ],
-      "name": "registerInfraction",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ticketId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_requestedInfractorAddress",
-          "type": "address"
-        }
-      ],
-      "name": "registerTransferTicketRequest",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "_cancelTicketRequestId",
           "type": "uint256"
         }
       ],
-      "name": "rejectCancelTicketRequest",
+      "name": "acceptCancelTicketRequest",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -303,7 +129,7 @@
           "type": "uint256"
         }
       ],
-      "name": "rejectTransferTicketRequest",
+      "name": "acceptTransferTicketRequest",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -510,12 +336,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "authoritieId",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "_driverAddress",
+          "type": "address"
         }
       ],
-      "name": "getAuthoritieInformationById",
+      "name": "getDriverInformationByAddress",
       "outputs": [
         {
           "internalType": "string",
@@ -523,14 +349,24 @@
           "type": "string"
         },
         {
-          "internalType": "string",
-          "name": "sigla",
-          "type": "string"
+          "internalType": "uint256",
+          "name": "numberOfPoints",
+          "type": "uint256"
         },
         {
           "internalType": "address",
-          "name": "authoritieAddress",
+          "name": "driverAddress",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "exist",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -627,6 +463,180 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "payInfraction",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_sigla",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_authoritieAddress",
+          "type": "address"
+        }
+      ],
+      "name": "registerAuthoritie",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_explanation",
+          "type": "string"
+        }
+      ],
+      "name": "registerCancelTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "numberOfPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_driverAddress",
+          "type": "address"
+        }
+      ],
+      "name": "registerDriver",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_vehiclePlate",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractionCategory",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_dateInfraction",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractionPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_observations",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_valueToPay",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_statusOfInfraction",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_infractorDriverAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_infractorDriverId",
+          "type": "uint256"
+        }
+      ],
+      "name": "registerInfraction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ticketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_requestedInfractorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "registerTransferTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_cancelTicketRequestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "rejectCancelTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tranferTicketRequestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "rejectTransferTicketRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -13447,8 +13457,8 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0x1db7bb257765f68aa70ece6a9d87cf6280d46b08",
-      "transactionHash": "0x099cd4b5d54a9517191bf1288a3d4ee7cfa6f2af6829164404adc1c4c1668087"
+      "address": "0xc3945cbcacb94e70bf859684b7c1ab06b641746f",
+      "transactionHash": "0x12dbe93a6de107f159b793651d22af0de799d919d288a2f2c285981eaa030b4a"
     }
   },
   "schemaVersion": "3.2.4",

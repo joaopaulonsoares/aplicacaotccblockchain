@@ -85,6 +85,8 @@ contract InfractionTcc{
         registerDriver("Irineu", 0, 0x89044E6D53B2Ff837f0FA9584e112139E9E35861);
         registerDriver("Luciene", 0,0xedbCDDb7DE91A24783Ba2FFf5420f73F7A7e439F);
         registerDriver("Mariana", 0, 0x50A1Fc5774B42132B2101Eb7B3b7eeBA9df8eA83);
+
+
     }
     //  ============================================================== REGISTER FUNCTIONS ==============================================================
 
@@ -141,8 +143,7 @@ contract InfractionTcc{
         cancelTicketsRequests[cancelTicketsRequestCount] = CancelTickeRequest(cancelTicketsRequestCount, _ticketId, 0, _explanation, msg.sender, _ticket.authorityResponsableAdress);
         cancelTicketsRequestCount++;
         
-        emit CancelTicketEvent("Requisicao para cancelamento de infracao realizada com sucesso!");
-                                                                      
+        emit CancelTicketEvent("Requisicao para cancelamento de infracao realizada com sucesso!");                                           
     }
      
     //  ============================================================== GET INFORMATION FUNCTIONS ==============================================================
