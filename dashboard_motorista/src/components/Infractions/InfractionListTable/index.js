@@ -9,6 +9,7 @@ import GavelIcon from '@material-ui/icons/Gavel';
 import CustomizedModal from '../../CustomizedModal/index'
 import InfractionCancelRequestForm from '../InfractionCancelRequestForm/index'
 import InfractionTransferRequestForm from '../InfractionTransferRequestForm/index'
+import InfractionPayment from '../InfractionPayment/index'
 
 class InfractionListTable extends Component {
 
@@ -39,10 +40,12 @@ class InfractionListTable extends Component {
       currentPage:1,
       loadingTransaction: false,
       openCancelInfractionModalRequest:false,
-      openTransferInfractionModalRequest:false
+      openTransferInfractionModalRequest:false,
+      openPayInfractionModal:false
     };
     this.handleModalCancelInfractionClose = this.handleModalCancelInfractionClose.bind(this);
     this.handleModalTransferInfractionClose = this.handleModalTransferInfractionClose.bind(this);
+    this.handleModalPayInfractionClose = this.handleModalPayInfractionClose.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +73,15 @@ class InfractionListTable extends Component {
   handleModalTransferInfractionClose(){
     this.setState({infractionInfoRequest:"", openTransferInfractionModalRequest:false})
   }
+
+  handleModalPayInfractionOpen(rowData){
+    this.setState({infractionInfoRequest:rowData, openPayInfractionModal:true})
+  }
+
+  handleModalPayInfractionClose(){
+    console.log("chamou")
+    this.setState({infractionInfoRequest:"", openPayInfractionModal:false})
+  }
     
   render(){
     const tableRef = React.createRef();
@@ -81,8 +93,12 @@ class InfractionListTable extends Component {
                 <InfractionCancelRequestForm ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account}></InfractionCancelRequestForm>
               </CustomizedModal>
               
-              <CustomizedModal open={this.state.openTransferInfractionModalRequest} handleClose={this.handleModalCancelInfractionClose} title="Transferência de Infração">
+              <CustomizedModal open={this.state.openTransferInfractionModalRequest} handleClose={this.handleModalTransferInfractionClose} title="Transferência de Infração">
                 <InfractionTransferRequestForm ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account}></InfractionTransferRequestForm>
+              </CustomizedModal>
+              
+              <CustomizedModal open={this.state.openPayInfractionModal} handleClose={this.handleModalPayInfractionClose} title="Pagamento de Infração">
+                <InfractionPayment ticket={this.state.infractionInfoRequest} contract={this.props.contract} account={this.props.account} handleClose={this.handleModalPayInfractionClose}></InfractionPayment>
               </CustomizedModal>
               
               <MaterialTable
@@ -110,7 +126,7 @@ class InfractionListTable extends Component {
                     icon: AttachMoneyIcon,
                     tooltip: 'Pagar Infração',
                     onClick: (event, rowData) => (
-                      this.cancelInfraction(rowData)
+                      this.handleModalPayInfractionOpen(rowData)
                    ),
                     disabled: rowData.statusOfInfraction !== "Active"
                   })
