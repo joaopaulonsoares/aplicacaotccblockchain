@@ -583,11 +583,6 @@
           "internalType": "address",
           "name": "_infractorDriverAddress",
           "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_infractorDriverId",
-          "type": "uint256"
         }
       ],
       "name": "registerInfraction",

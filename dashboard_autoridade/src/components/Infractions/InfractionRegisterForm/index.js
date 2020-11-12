@@ -9,36 +9,6 @@ import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker,
-} from '@material-ui/pickers';
-import ptBrLocale from "date-fns/locale/pt-BR";
-
-
-
-const useStyles = makeStyles({
-  root: {
-    background:'#007E5A',
-    border: 0,
-    height: '100%',
-    width: '100%',
-    position: "fixed",
-    display: "flex"
-  },
-  inputBorderColor:{
-      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-        borderColor: "green"
-      },
-  },
-  inputTextColor:{
-    color:'green',
-  },
-  textField: {
-    minWidth: '30vh',
-  },
-});
-
 class InfractionRegisterForm extends React.Component {
     constructor(props){
         super(props);
@@ -77,8 +47,8 @@ class InfractionRegisterForm extends React.Component {
     };
 
     handleDateInfraction = (e) => {
-
-        this.setState({dateInfraction: e});
+        console.log(e)
+        this.setState({dateInfraction: e.target.value});
     };
 
     handleInfractionPoints = (e) => {
@@ -111,11 +81,13 @@ class InfractionRegisterForm extends React.Component {
     };
 
     async registerInfraction(){
+        console.log(this.state.dateInfraction)
+
         //console.log("Driver id ", this.state.infractorDriverId)
         var vehiclePlate = this.state.vehiclePlate;
         var infractionCategory = parseInt(this.state.infractionCategory);
         var dateInfraction = this.state.dateInfraction;
-        var dateInfractionFormated = dateInfraction.getMonth() + "/" + dateInfraction.getDay() + "/" + dateInfraction.getFullYear()
+        //var dateInfractionFormated = dateInfraction.getMonth() + "/" + dateInfraction.getDay() + "/" + dateInfraction.getFullYear()
         var infractionPoints = parseInt(this.state.infractionPoints);
         var observations = this.state.observations;
         var valueToPay = 10000;
@@ -127,13 +99,24 @@ class InfractionRegisterForm extends React.Component {
         this.setState({waitingInfractionRegister:true})
         //console.log(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId)
         
-        const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfractionFormated,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress, infractorDriverId).send({ from: this.props.account })
+        const registerInfraction = await this.props.contract.methods.registerInfraction(vehiclePlate,infractionCategory,dateInfraction,infractionPoints,observations,valueToPay,statusOfInfraction, infractorDriverAddress).send({ from: this.props.account })
         .on('transactionHash', function(hash){
             //console.log("hash", hash)
         })
 
         if(registerInfraction.status){
-            window.alert("Infracao Registrada com sucesso no bloco " + registerInfraction.blockNumber + " na transação " + registerInfraction.transactionHash )
+            window.alert("Infracao Registrada com sucesso no bloco " + registerInfraction.blockNumber + " na transação " + registerInfraction.transactionHash );
+            this.setState({
+                vehiclePlate: "", 
+                infractionCategory: "",
+                dateInfraction: "",
+                infractionPoints: "",
+                observations: "",
+                valueToPay: "",
+                statusOfInfraction: "",
+                infractorDriverAddress: "",
+                infractorDriverId: "",
+            });
         }else{
             window.alert("Erro ao registrar Infracao. Tente novamente mais tarde" )
         }
@@ -169,7 +152,6 @@ class InfractionRegisterForm extends React.Component {
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Placa do Veículo" 
-                            className={classes.inputBorderColor}
                             id="vehiclePlate"
                             variant="outlined"
                             color="primary"
@@ -184,7 +166,6 @@ class InfractionRegisterForm extends React.Component {
                             <TextField id="selectInfractionCategory" 
                             label="Categoria da Infração"
                             variant="outlined" fullWidth={true} select
-                            className={classes.textField}
                             onChange={(e)=>{this.handleInfractionCategory(e)}}
                             value={this.state.infractionCategory}
                             >
@@ -199,27 +180,25 @@ class InfractionRegisterForm extends React.Component {
                     </Grid>
                     <Grid item xs={6}>
                         <Box display="block" justifyContent="flex-start" >
-                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBrLocale}>
-                                <KeyboardDatePicker
-                                    label="Data da Infração"
-                                    disableToolbar
-                                    fullWidth={true}
-                                    variant="inline"
-                                    format="dd/MM/yyyy"
-                                    value={this.state.dateInfraction}
+                                <TextField
                                     id="infractionDate"
                                     inputVariant="outlined"
-                            
+                                    label="Data da Infração"
+                                    fullWidth={true}
+                                    type="date"
+                                    value={this.state.dateInfraction}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                     onChange={(e)=>{this.handleDateInfraction(e)}}
-                                    />
-                                </MuiPickersUtilsProvider>
+                                />
+
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Pontuação da Infração" 
-                            className={classes.inputBorderColor}
                             fullWidth={true}
                             id="infractionPoints"
                             variant="outlined"
@@ -234,7 +213,6 @@ class InfractionRegisterForm extends React.Component {
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Observações" 
-                            className={classes.inputBorderColor}
                             fullWidth={true}
                             id="observationsField"
                             variant="outlined"
@@ -246,32 +224,16 @@ class InfractionRegisterForm extends React.Component {
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={12}>
                         <Box display="block" justifyContent="flex-start" >
                             <TextField
                             label="Chave(address) do infrator" 
-                            className={classes.inputBorderColor}
                             id="driverAddress"
                             variant="outlined"
                             color="primary"
                             fullWidth={true}
                             onChange={(e)=>{this.handleInfractorDriverAddress(e)}}
                             value={this.state.infractorDriverAddress}
-                            />
-                        </Box>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Box display="block" justifyContent="flex-start" >
-                            <TextField
-                            label="Id do infrator" 
-                            className={classes.inputBorderColor}
-                            id="driverId"
-                            variant="outlined"
-                            color="primary"
-                            type="number"
-                            fullWidth={true}
-                            onChange={(e)=>{this.handleInfractorDriverId(e)}}
-                            value={this.state.infractorDriverId}
                             />
                         </Box>
                     </Grid>
@@ -294,4 +256,4 @@ class InfractionRegisterForm extends React.Component {
     }
 }
 
-export default withStyles(useStyles)(InfractionRegisterForm);
+export default InfractionRegisterForm;
