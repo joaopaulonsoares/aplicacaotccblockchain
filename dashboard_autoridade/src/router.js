@@ -21,7 +21,8 @@ class PrivateRouteAuth extends Component{
         super(props);
         this.state = {
           isAuthenticaded: false,
-          isLoadingPage:"true"
+          isLoadingPage:"true",
+          isTransitBoard:false
         };
         this.checkIfUserIsAuthoritie = this.checkIfUserIsAuthoritie.bind(this);
     }
@@ -31,7 +32,7 @@ class PrivateRouteAuth extends Component{
             var authorities = this.props.authorities;
             var currentAccount = this.props.account;
             var status = await authorities.filter(authoritie => authoritie.authoritieAddress === currentAccount).length > 0;
-        
+
             if(status){
                 // It is an authoritie
                 this.setState({isAuthenticaded:true})
@@ -93,7 +94,7 @@ function AppRouter(props){
             </Route>
             {/*Authenticated routes */}
             <PrivateRouteAuth account={props.account} authorities={props.authorities}>
-                <MenuDrawer account={props.account}>
+                <MenuDrawer account={props.account} authorities={props.authorities}>
                     <Route exact path={DASHBOARD_BASE_URL}>
                         <InitialDashboard></InitialDashboard>
                     </Route>

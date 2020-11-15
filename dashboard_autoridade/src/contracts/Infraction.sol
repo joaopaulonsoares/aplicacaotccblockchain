@@ -40,6 +40,7 @@ contract InfractionTcc{
         string sigla;
         address authoritieAddress;
         bool exist;
+        bool isTransitBoard;
     }
     
     struct TransferTicket{
@@ -57,7 +58,10 @@ contract InfractionTcc{
         string explanation;
         address driverAddress;
         address authorityResponsableAdress;
+        address transitBoardResponsible;
     }
+    
+    address TransitBoardResponsible = 0x16B746E98118020E4a23d23F00db97c757ea19Ca;
 
     // Map Tickets
     mapping(uint => TraficTicket) public tickets;
@@ -78,8 +82,8 @@ contract InfractionTcc{
     
     //  Adding Some initial informations to the Smart Contract
     constructor(){
-        registerAuthoritie("Joao Paulo","JPNS", 0x2af609914ac3996113e52E133d78329A3c90c3CB );
-        registerAuthoritie("Autoridade Um","AutUm", 0x16B746E98118020E4a23d23F00db97c757ea19Ca );
+        registerAuthoritie("Joao Paulo","JPNS", 0x2af609914ac3996113e52E133d78329A3c90c3CB, false);
+        registerAuthoritie("Junta de Transito","JunTran", 0x16B746E98118020E4a23d23F00db97c757ea19Ca,true );
         registerDriver("Jaqueline", 0, 0xd4f64F2c38c5712F0082787E17BaB4192Bc7373F);
         registerDriver("Irineu", 0, 0x89044E6D53B2Ff837f0FA9584e112139E9E35861);
         registerDriver("Luciene", 0,0xedbCDDb7DE91A24783Ba2FFf5420f73F7A7e439F);
@@ -88,9 +92,9 @@ contract InfractionTcc{
 
     //  ============================================================== REGISTER FUNCTIONS ==============================================================
 
-    function registerAuthoritie(string memory _name,string memory _sigla, address _authoritieAddress) public{
-        authorities[authoritiesCount] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress, true);
-        authoritiesListAddress[_authoritieAddress] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress, true);
+    function registerAuthoritie(string memory _name,string memory _sigla, address _authoritieAddress, bool _isTransitBoard) public{
+        authorities[authoritiesCount] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress, true, _isTransitBoard);
+        authoritiesListAddress[_authoritieAddress] = Authorities(authoritiesCount, _name, _sigla, _authoritieAddress, true, _isTransitBoard);
         authoritiesCount++;
         emit registeredAuthoritieEvent(msg.sender);
     }
@@ -120,11 +124,8 @@ contract InfractionTcc{
     }
     
     function registerTransferTicketRequest(uint _ticketId, address _requestedInfractorAddress )public{
-         // Get Ticket INFORMATION
-        TraficTicket memory _ticket = tickets[_ticketId];
-        
         // Checks if is the current owner of infraction that is requesting
-        require(_ticket.infractorDriverAddress == msg.sender);
+        require(tickets[_ticketId].infractorDriverAddress == msg.sender);
         
         tranferTicketsRequests[transferTicketsCount] = TransferTicket(transferTicketsCount, _ticketId, 0, msg.sender, _requestedInfractorAddress);
         transferTicketsCount++;
@@ -133,13 +134,10 @@ contract InfractionTcc{
     }
     
     function registerCancelTicketRequest(uint _ticketId, string memory _explanation) public{
-         // Get Ticket INFORMATION
-        TraficTicket memory _ticket = tickets[_ticketId];
-        
         // Checks if is the current owner of infraction that is requesting to cancel
-        require(_ticket.infractorDriverAddress == msg.sender);
+        require(tickets[_ticketId].infractorDriverAddress == msg.sender);
         
-        cancelTicketsRequests[cancelTicketsRequestCount] = CancelTickeRequest(cancelTicketsRequestCount, _ticketId, 0, _explanation, msg.sender, _ticket.authorityResponsableAdress);
+        cancelTicketsRequests[cancelTicketsRequestCount] = CancelTickeRequest(cancelTicketsRequestCount, _ticketId, 0, _explanation, msg.sender, tickets[_ticketId].authorityResponsableAdress, TransitBoardResponsible);
         cancelTicketsRequestCount++;
         
         emit CancelTicketEvent("Requisicao para cancelamento de infracao realizada com sucesso!");
@@ -147,10 +145,7 @@ contract InfractionTcc{
      
     //  ============================================================== GET INFORMATION FUNCTIONS ==============================================================
 
-    function getTicketInformationById(uint ticket_id) public view returns(string memory vehiclePlate, uint infractionCategory,
-                                string memory dateInfraction, uint infractionPoints,
-                                string memory observations, uint valueToPay,
-                                string memory statusOfInfraction, address infractorDriverAddress, address authorityResponsableAdress
+    function getTicketInformationById(uint ticket_id) public view returns(string memory vehiclePlate, uint infractionCategory, string memory dateInfraction, uint infractionPoints, string memory observations, uint valueToPay, string memory statusOfInfraction, address infractorDriverAddress, address authorityResponsableAdress
     ){
         vehiclePlate = tickets[ticket_id].vehiclePlate;
         infractionCategory = tickets[ticket_id].infractionCategory;
@@ -275,7 +270,7 @@ contract InfractionTcc{
         require(_cancelTicketRequest.status == 0);
         
         // Checks if user accepting is the authority responsable of infraction
-        require(_cancelTicketRequest.authorityResponsableAdress == msg.sender);
+        require(_cancelTicketRequest.transitBoardResponsible == msg.sender);
         
         // Update the request status
         _cancelTicketRequest.status = 2;
@@ -291,7 +286,7 @@ contract InfractionTcc{
         require(_cancelTicketRequest.status == 0);
         
         // Checks if user accepting is the authority responsable of infraction
-        require(_cancelTicketRequest.authorityResponsableAdress == msg.sender);
+        require(_cancelTicketRequest.transitBoardResponsible == msg.sender);
         
         // Update the request status
         _cancelTicketRequest.status = 1;
@@ -320,6 +315,6 @@ contract InfractionTcc{
         _driver.numberOfPoints = driverPointsAfterCancel;
         drivers[_driverId] = _driver;
         
-        //emit TicketPayed(_ticketId, msg.sender, "Infracao cancelada com sucesso!");
+        emit TicketPayedEvent(_ticketId, msg.sender, "Infracao cancelada com sucesso!");
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,12 +14,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import NestedToolListUser from './NestedLists/NestedListUsers'
 import NestedToolInfractions from './NestedLists/NestedListInfractions'
+import TransitBoardList from './NestedLists/TransitBoardList'
 
 import {useStyles} from './const_info'
 
 export default function MenuDrawer(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [isTransitBoard, setIsTransitBoard] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -27,7 +30,16 @@ export default function MenuDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   }; 
-  
+
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function checkIfIsTransitBoard(){
+      var authoritie = await props.authorities.filter(authoritie => authoritie.authoritieAddress ===  props.account );
+      setIsTransitBoard(authoritie[0].isTransitBoard);
+    }
+    // Execute the created function directly
+    checkIfIsTransitBoard();
+  }, [isTransitBoard, props.authorities, props.account]);
 
   return (
     <div className={classes.root}>
@@ -42,9 +54,12 @@ export default function MenuDrawer(props) {
           >
             <MenuIcon></MenuIcon>
           </IconButton>
-          <Typography component="h1" variant="h6" noWrap className={classes.title}>
-            Olá Autoridade de Trânsito, {props.account}
-          </Typography>
+            {isTransitBoard ? 
+              <Typography component="h1" variant="h6" noWrap className={classes.title}>Olá Junta de Trânsito, {props.account}</Typography>
+              : 
+              <Typography component="h1" variant="h6" noWrap className={classes.title}>Olá Autoridade de Trânsito, {props.account}</Typography>
+            }
+          
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" classes={{paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),}} open={open}>  
@@ -54,8 +69,14 @@ export default function MenuDrawer(props) {
             </IconButton>
           </div>
           <Box paddingTop={2}>
-            <NestedToolListUser></NestedToolListUser>
-            <NestedToolInfractions></NestedToolInfractions>
+          {isTransitBoard ? 
+            <TransitBoardList></TransitBoardList> 
+            : <div>
+                <NestedToolListUser></NestedToolListUser>
+                <NestedToolInfractions></NestedToolInfractions>
+              </div>
+          }
+            
           </Box>
       </Drawer>
       

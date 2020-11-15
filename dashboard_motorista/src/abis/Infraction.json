@@ -168,6 +168,11 @@
           "internalType": "bool",
           "name": "exist",
           "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "isTransitBoard",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -237,6 +242,11 @@
         {
           "internalType": "address",
           "name": "authorityResponsableAdress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "transitBoardResponsible",
           "type": "address"
         }
       ],
@@ -494,6 +504,11 @@
           "internalType": "address",
           "name": "_authoritieAddress",
           "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isTransitBoard",
+          "type": "bool"
         }
       ],
       "name": "registerAuthoritie",
@@ -783,8 +798,8 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0x1483d21be8c12e141c0cabfdcc9f602c62485d18",
-      "transactionHash": "0x176e9c127fe7100082c9dc3722df3e93242b5a0e52f163c59df00a169f1e7f36"
+      "address": "0x4652ffa07aa8102e87b241a74c37ac6f760a3721",
+      "transactionHash": "0x634e04c79452a8a8d68ae5099b230a05760f0911b0a9644dbb2b9d8afa0b34b1"
     }
   },
   "schemaVersion": "3.2.4",
